@@ -1,10 +1,12 @@
 <script lang="ts">
   import "../app.css";
-  import { inject } from "@vercel/analytics";
   import { dev } from "$app/environment";
   import { color_theme } from "$lib/stores.svelte";
+  import { inject } from "@vercel/analytics";
+  import { injectSpeedInsights } from "@vercel/speed-insights/sveltekit";
 
   inject({ mode: dev ? "development" : "production" });
+  injectSpeedInsights();
 
   const daisyui_themes = [
     "light",
