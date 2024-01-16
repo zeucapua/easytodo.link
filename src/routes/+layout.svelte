@@ -48,7 +48,7 @@
 </script>
 
 <svelte:head>
-  <title>easytodo.link - by @zeu_dev</title>
+  <title>easytodo.link - free online to do list</title>
 </svelte:head>
 
 <main class="relative flex flex-col gap-8 w-full h-full min-w-screen min-h-screen p-8 items-center justify-center">

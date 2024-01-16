@@ -31,12 +31,12 @@
       <input 
         type="checkbox" 
         bind:checked={task.is_completed} 
-        class="checkbox checkbox-lg"
+        class="checkbox lg:checkbox-lg"
       />
       <input 
         type="text" 
         bind:value={task.description} 
-        class={`text-xl input input-lg w-full max-w-lg ${task.is_completed && "line-through"}`}
+        class={`text-lg lg:text-xl input lg:input-lg w-full max-w-lg ${task.is_completed && "line-through"}`}
       />
       <button
         onclick={() => todo_list.removeTask(task.id)}
@@ -45,7 +45,7 @@
         <img 
           src="/block-2.svg" 
           alt="Flex Solid 'Block 2' by StreamlineHQ" 
-          class="w-6" 
+          class="w-4 lg:w-6" 
         />    
       </button>
     </li>
@@ -57,8 +57,8 @@
   <input 
     type="text" 
     bind:value={description} 
-    class="text-xl input input-bordered input-lg w-full max-w-lg"
+    class="text-lg lg:text-xl input input-bordered lg:input-lg w-full max-w-lg"
   />
-  <button class="btn btn-lg btn-primary">Add</button>
+  <button class="btn lg:btn-lg btn-primary">Add</button>
 </form>
 
