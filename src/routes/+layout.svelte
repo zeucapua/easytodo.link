@@ -43,8 +43,8 @@
     "sunset",
   ];
 
-  let theme_input = $state(color_theme.theme);
-  $effect(() => color_theme.updateTheme(theme_input));
+  let theme_input = $state(color_theme.value);
+  $effect(() => color_theme.update(theme_input));
 </script>
 
 <svelte:head>
