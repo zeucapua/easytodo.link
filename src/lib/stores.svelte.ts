@@ -2,35 +2,36 @@
 const browser_exists = (typeof window !== "undefined") && (typeof (document) !== "undefined");
 const storage = browser_exists ? localStorage : null;
 
-// Color Theme (from DaisyUI)
-const initial_theme : string = getInitialTheme();
+// Generalized Local Storage
+function persisted<T>(key: string, default_value: T) {
+  let value : T = $state(default_value);
 
-function getInitialTheme() {
-  const initial_local = storage?.getItem("local_theme");
-  if (initial_local) { 
-    console.log("getInitial", initial_local);
-    return initial_local 
+  const initial_local = storage?.getItem(key);
+  if (initial_local) {
+    try {
+      value = JSON.parse(initial_local).value as T;
+      if (!value) { update(default_value); }
+    } 
+    catch (e) {
+      update(default_value);
+    }
   }
-  return "default";
-}
 
-function localTheme() {
-  let theme : string = $state(initial_theme);
-
-  function updateTheme(new_theme : string) {
+  function update(new_value : T) {
     if (browser_exists) {
-      theme = new_theme;
-      storage?.setItem("local_theme", theme);
+      value = new_value;
+      storage?.setItem(key, JSON.stringify({ value }));
     }
   }
 
   return {
-    get theme() { return theme; },
-    updateTheme
+    get value() { return value; },
+    update
   }
 }
 
-export const color_theme = localTheme();
+// Color Theme (from DaisyUI)
+export const color_theme = persisted<string>("local_theme", "default");
 
 // Task + Todo List
 export type Task = {
@@ -39,37 +40,4 @@ export type Task = {
   is_completed: boolean;
 }
 
-const initial_list : Task[] = getInitialList();
-
-function getInitialList() {
-  const initial_local = storage?.getItem("local_todo_list");
-  if (initial_local) { return JSON.parse(initial_local) as Task[]; }
-  return [];
-}
-
-function localTodoList() {
-  let tasks : Task[] = $state(initial_list);
-
-  function addTask(new_task : Task) {
-    tasks.push(new_task);
-  }
-
-  function removeTask(id : string) {
-    tasks = tasks.filter((t) => t.id !== id);
-  }
-
-  function update() {
-    if (browser_exists) {
-      storage?.setItem("local_todo_list", JSON.stringify(tasks));
-    }
-  }
-
-  return {
-    get tasks() { return tasks; },
-    addTask,
-    removeTask,
-    update
-  }
-}
-
-export const todo_list = localTodoList();
+export const todo_list = persisted<Task[]>("local_todo_list", []);
