@@ -40,4 +40,10 @@ export type Task = {
   is_completed: boolean;
 }
 
+export type List = {
+  id: string;
+  title: string;
+  tasks: Task[]
+}
+
 export const todo_list = persisted<Task[]>("local_todo_list", []);
