@@ -3,12 +3,18 @@ const browser_exists = (typeof window !== "undefined") && (typeof (document) !==
 const storage = browser_exists ? localStorage : null;
 
 // Generalized Local Storage
-function persisted<T>(key: string, initial_value: T) {
-  let value : T = $state(initial_value);
+function persisted<T>(key: string, default_value: T) {
+  let value : T = $state(default_value);
 
   const initial_local = storage?.getItem(key);
   if (initial_local) {
-    value = JSON.parse(initial_local).value as T;
+    try {
+      value = JSON.parse(initial_local).value as T;
+      if (!value) { update(default_value); }
+    } 
+    catch (e) {
+      update(default_value);
+    }
   }
 
   function update(new_value : T) {

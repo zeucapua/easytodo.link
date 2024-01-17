@@ -4,7 +4,7 @@
   $effect(() => console.log(todo_list));
 
   // TODO: get better ID management
-  let id = 0;
+  let id = $state(0);
   let description = $state("");
 
   function randomizeId() {
