@@ -1,44 +1,44 @@
 <script lang="ts">
-  import { todo_list, type Task } from "$lib/stores.svelte";
-
-  $effect(() => console.log(todo_list));
+  import { type Task, local_lists } from "$lib/stores.svelte";
 
   // TODO: get better ID management
-  let id = $state(0);
   let description = $state("");
 
-  function randomizeId() {
-    let random_id = id;
-    while (todo_list.value.find(t => t.id === `${random_id}`)) {
-      random_id = Math.floor(Math.random() * 100);
-    }
-    id = random_id;
-  }
+  let current_list = $state(local_lists.value[0]);
 
   function addTask() {
-    randomizeId();
-    todo_list.update(
-      [...todo_list.value, {
-        id: `${id}`,
-        description,
-        is_completed: false
-      }]
-    );
-    description = "";
+    current_list.tasks.push({
+      id: crypto.randomUUID(),
+      description,
+      is_completed: false,
+      list_id: current_list.id
+    });
   }
 
   function removeTask(id: string) {
-    todo_list.update(
-      todo_list.value.filter((t) => t.id !== id)
-    );
+    current_list.tasks = current_list.tasks.filter(t => t.id !== id);
   }
 
-  // update when tasks change (description, is_completed)
-  $effect(() => todo_list.update(todo_list.value));
+  function createList() {
+    current_list = { id: crypto.randomUUID(), title: "", tasks: [] };
+    local_lists.value.push(current_list);
+  }
+
+  function removeList(id: string) {
+    local_lists.value = local_lists.value.filter(l => l.id !== id);
+    if (local_lists.value.length === 0) {
+      createList();
+    }
+    current_list = local_lists.value[0];
+  }
+
+  $effect(() => {
+    local_lists.update();
+  });
 </script>
 
 <ul class="flex flex-col gap-8 overflow-y-scroll h-full max-h-[48rem] p-2">
-  {#each todo_list.value as task : Task}
+  {#each current_list.tasks as task : Task}
     <li class="group flex gap-4 items-center">
       <input 
         type="checkbox" 
@@ -74,3 +74,49 @@
   <button onclick={addTask} class="btn lg:btn-lg btn-primary">Add</button>
 </section>
 
+<section class="flex gap-4 justify-evenly">
+  <details class="dropdown dropdown-top">
+    <summary class="btn btn-secondary">
+      <img 
+        src="/cog.svg" 
+        alt="Flex Solid 'Cog' by StreamlineHQ" 
+        class="w-6" 
+      />    
+    </summary>
+    <ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
+      {#each local_lists.value as list : List}
+        <li>
+          <input
+            type="radio" 
+            aria-label={list.title.length === 0 ? "Untitled" : list.title}
+            bind:group={current_list} 
+            value={list}
+            class="btn btn-sm btn-block btn-ghost justify-start"
+          />
+        </li>
+      {/each}
+      <li>
+        <button class="" onclick={createList}> 
+          + New list
+        </button>
+      </li>
+    </ul>
+  </details>
+
+  <input
+    type="text"
+    bind:value={current_list.title}
+    class="text-center w-fit input"
+    placeholder="Untitled List"
+  />
+  <button
+    onclick={() => removeList(current_list.id)}
+    class="btn btn-error"
+  >
+    <img 
+      src="/block-2.svg" 
+      alt="Flex Solid 'Block 2' by StreamlineHQ" 
+      class="w-4 lg:w-6" 
+    />    
+  </button>
+</section>

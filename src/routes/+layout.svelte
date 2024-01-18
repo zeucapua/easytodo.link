@@ -42,9 +42,6 @@
     "nord",
     "sunset",
   ];
-
-  let theme_input = $state(color_theme.value);
-  $effect(() => color_theme.update(theme_input));
 </script>
 
 <svelte:head>
@@ -74,7 +71,7 @@
                     <input
                       type="radio" 
                       aria-label={theme}
-                      bind:group={theme_input} 
+                      bind:group={color_theme.value} 
                       value={theme} 
                       class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
                     />
