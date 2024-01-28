@@ -4,20 +4,17 @@ Local first, simple to do list. Made by [@zeu_dev](https://twitter.com/zeu_dev).
 
 ## Roadmap
 
-### Free features
+### Features
 
 - [x] ✨ Sync data with local storage
 - [x] 💄 Set color theme
 - [ ] 💄 Change background with image
-- [ ] 🏗️ Multiple lists with titles
+- [X] 🏗️ Multiple lists with titles
 - [ ] ✨ Add stopwatch (optional time tracking)
 - [ ] 🚀 Publish lists as template (ready for copy)
-
-### Paid (?) features 
-
 - [ ] 🛂 Online account with cloud sync
-- [ ] 💸 Implement one-time fee
-- [ ] 🚀 Publish lists as public (attached to user's data) 
+- [ ] 🔨 Paid third party integrations (???)
+- [ ] 🚀 Publish lists as public (attached to user's current data) 
 - [ ] 🚀 Publish lists as private (password protected)
 
 ## Made with
