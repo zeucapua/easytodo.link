@@ -1,109 +1,23 @@
 <script lang="ts">
   import "../app.css";
-  import { dev } from "$app/environment";
-  import { color_theme } from "$lib/stores.svelte";
-  import { inject } from "@vercel/analytics";
-  import { injectSpeedInsights } from "@vercel/speed-insights/sveltekit";
+  import { theme } from "$lib/stores.svelte";
 
-  inject({ mode: dev ? "development" : "production" });
-  injectSpeedInsights();
+  let theme_style = $derived(theme.value === "light"
+    ? "text-black absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"
+    : "text-white absolute top-0 z-[-2] h-screen w-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px]"
+  );
 
-  const daisyui_themes = [
-    "light",
-    "dark",
-    "cupcake",
-    "bumblebee",
-    "emerald",
-    "corporate",
-    "synthwave",
-    "retro",
-    "cyberpunk",
-    "valentine",
-    "halloween",
-    "garden",
-    "forest",
-    "aqua",
-    "lofi",
-    "pastel",
-    "fantasy",
-    "wireframe",
-    "black",
-    "luxury",
-    "dracula",
-    "cmyk",
-    "autumn",
-    "business",
-    "acid",
-    "lemonade",
-    "night",
-    "coffee",
-    "winter",
-    "dim",
-    "nord",
-    "sunset",
-  ];
+  function getTheme(if_light: any, if_dark: any) {
+    return theme.value === "light" ? if_light : if_dark;
+  }
 </script>
 
-<svelte:head>
-  <title>easytodo.link - free online to do list</title>
-</svelte:head>
-
-<main class="relative flex flex-col gap-8 w-full h-full min-w-screen min-h-screen p-8 items-center justify-center">
+<div class={theme_style}>
   <slot />
-
-  <footer class="absolute inset-x-0 bottom-0 flex justify-between px-8 py-4 items-center">
-    <section class="flex gap-4 items-center">
-      <details class="dropdown dropdown-top">
-        <summary class="btn btn-primary">
-          <img 
-            src="/cog.svg" 
-            alt="Flex Solid 'Cog' by StreamlineHQ" 
-            class="w-6" 
-          />    
-        </summary>
-        <ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
-          <li>
-            <details class="dropdown dropdown-top">
-              <summary>Color Theme</summary>
-              <ul class="max-h-32 overflow-y-scroll p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
-                {#each daisyui_themes as theme}
-                  <li>
-                    <input
-                      type="radio" 
-                      aria-label={theme}
-                      bind:group={color_theme.value} 
-                      value={theme} 
-                      class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
-                    />
-                  </li>
-                {/each}
-              </ul>
-            </details>
-          </li>
-        </ul>
-      </details>
-      <p class="hidden lg:block">easytodo.link - local first todo list</p>
-    </section>
-
-    
-    <section>
-      <p>
-        <a
-          href="https://github.com/zeucapua/easytodo.link"
-          target="_blank"
-          class="link link-hover link-secondary"
-        >
-          {"Made with <3"} 
-        </a>
-        by 
-        <a 
-          href="https://twitter.com/zeu_dev" 
-          target="_blank" 
-          class="link link-hover link-accent"
-        >
-          @zeu_dev
-        </a>
-      </p>
-    </section>
-  </footer>
-</main>
+  <button onclick={() => { theme.value = getTheme("dark", "light") }}>
+    <img
+      src={getTheme("/moon.svg", "/light-bulb.svg")} 
+      alt="Theme toggle button"
+    />
+  </button>
+</div>

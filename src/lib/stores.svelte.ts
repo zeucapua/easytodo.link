@@ -12,12 +12,12 @@ export function persisted<T>(key: string, default_value: T) {
       if (!value) { update(); }
   }
   else {
-    storage?.setItem(key, JSON.stringify(default_value));
+    update();
   }
 
   function update() {
     if (browser_exists) {
-      storage?.setItem(key, JSON.stringify({ value }));
+      storage?.setItem(key, JSON.stringify({ value: value }));
     }
   }
 
@@ -28,21 +28,5 @@ export function persisted<T>(key: string, default_value: T) {
   }
 }
 
-// Color Theme (from DaisyUI)
-export const color_theme = persisted<string>("local_theme", "default");
-
-// Task + Todo List
-export type Task = {
-  id: string;
-  description: string;
-  is_completed: boolean;
-  list_id: string;
-}
-
-export type List = {
-  id: string;
-  title: string;
-  tasks: Task[];
-}
-
-export const local_lists = persisted<List[]>("local_lists", [{ id: crypto.randomUUID(), title: "", tasks: [] }]);
+// Dark/Light Mode
+export const theme = persisted<string>("theme", "light");
