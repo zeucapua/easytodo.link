@@ -29,4 +29,4 @@ export function persisted<T>(key: string, default_value: T) {
 }
 
 // Dark/Light Mode
-export const theme = persisted<string>("theme", "light");
+export const theme = persisted<string>("theme", "dark");
