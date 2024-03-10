@@ -1,21 +1,13 @@
 # easytodo.link
 
-Local first, simple to do list. Made by [@zeu_dev](https://twitter.com/zeu_dev).
+Local first, shareable to do list. Made by [@zeu_dev](https://twitter.com/zeu_dev).
 
 ## Roadmap
 
-### Features
-
-- [x] ✨ Sync data with local storage
-- [x] 💄 Set color theme
-- [ ] 💄 Change background with image
-- [X] 🏗️ Multiple lists with titles
-- [ ] ✨ Add stopwatch (optional time tracking)
-- [ ] 🚀 Publish lists as template (ready for copy)
-- [ ] 🛂 Online account with cloud sync
-- [ ] 🔨 Paid third party integrations (???)
-- [ ] 🚀 Publish lists as public (attached to user's current data) 
-- [ ] 🚀 Publish lists as private (password protected)
+- [ ] Local first tasks and list management
+- [ ] Cloud sync with Accounts
+- [ ] Share and explore lists
+- [ ] AI task suggestions
 
 ## Made with
 

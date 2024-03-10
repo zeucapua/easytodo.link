@@ -1,17 +1,23 @@
 <script lang="ts">
   import "../app.css";
+  import { page } from "$app/stores";
+  import { onMount } from "svelte";
   import { fade } from "svelte/transition";
-  import { theme } from "$lib/stores.svelte";
+  import { persisted, pinned_list } from "$lib/stores.svelte";
+  import { goto } from "$app/navigation";
 
+  const theme = persisted<string>("theme", "light");
   let is_menu_open = $state(false);
   let theme_style = $derived(theme.value === "light"
     ? "text-black absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"
     : "text-white absolute top-0 z-[-2] h-screen w-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px]"
   );
 
-  function getTheme(if_light: any, if_dark: any) {
-    return theme.value === "light" ? if_light : if_dark;
-  }
+  onMount(() => {
+    if ($page.url.pathname === "/") {
+      goto(`/${pinned_list.value}`);
+    }
+  });
 </script>
 
 <div class={`${theme_style} flex flex-col w-full h-full min-w-screen min-h-screen p-8`}>
@@ -24,7 +30,7 @@
       {#if is_menu_open}
         <menu 
           transition:fade={{ duration: 150 }}
-          class={`${getTheme("border-black", "border-[#00091d]")} w-fit border z-50 flex flex-col items-start gap-2 h-fit p-2 rounded-xl bg-white`}
+          class={`${theme.value === "light" ? "border-black" : "border-[#00091d]"} w-fit border z-50 flex flex-col items-start gap-2 h-fit p-2 rounded-xl bg-white`}
         >
           <button class="line-through flex gap-2 text-start w-full h-full rounded-xl pl-2 pr-5 py-2 hover:bg-slate-500/10 transition-all duration-150 items-center">
             <img src="/shooting-star.svg" alt="Item 1" class="w-8 h-8" />
@@ -36,7 +42,8 @@
           </button>
         </menu>
       {/if}
-      <nav class={`${getTheme("border-black", "border-[#00091d]")} border z-50 flex self-center items-center gap-4 mx-auto w-fit h-fit p-2 rounded-xl bg-white`}>
+
+      <nav class={`${theme.value === "light" ? "border-black" : "border-[#00091d]"} border z-50 flex self-center items-center gap-4 mx-auto w-fit h-fit p-2 rounded-xl bg-white`}>
         <button 
           onclick={() => is_menu_open = !is_menu_open} 
           class="w-full h-fit hover:bg-slate-500/10 rounded-full"
@@ -56,11 +63,11 @@
 
 
     <button 
-      onclick={() => { theme.value = getTheme("dark", "light") }}
-      class={`${getTheme("border-black", "border-[#00091d]")} border w-fit h-fit p-2 bg-white rounded-xl`}
+      onclick={() => { theme.value = theme.value === "light" ? "dark" : "light" }}
+      class={`${theme.value === "light" ? "border-black" : "border-[#00091d]"} border w-fit h-fit p-2 bg-white rounded-xl`}
     >
       <img
-        src={getTheme("/moon.svg", "/light-bulb.svg")} 
+        src="/light-bulb.svg"
         alt="Theme toggle button"
         class="w-12 h-12 hover:bg-slate-500/10 rounded-full"
       />
