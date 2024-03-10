@@ -1,18 +1,35 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { page } from "$app/stores";
-  import { local_lists, pinned_list, type List } from "$lib/stores.svelte";
+  import { local_lists, pinned_list, generateId, type List } from "$lib/stores.svelte";
 
   let list : List | undefined = $state(); 
+  let task_input = $state("");
 
   onMount(() => {
     list = local_lists.value!.find((l) => l.id === $page.params.id); 
   });
 
   $effect(() => local_lists.update());
+
+  function addTask() {
+    list?.tasks.push({
+      id: generateId(),
+      description: task_input,
+      is_completed: false
+    });
+
+    task_input = "";
+  }
+
+  function deleteTask(id: string) {
+    if (list) {
+      list.tasks = list.tasks.filter((t) => t.id !== id);
+    }
+  }
 </script>
 
-<main class="flex flex-col w-full p-2 lg:p-4 gap-8 text-xl lg:text-3xl">
+<main class="flex flex-col w-full p-2 pb-12 lg:p-4 lg:pb-24 gap-8 text-xl lg:text-3xl">
   {#if list}
     <input 
       type="text" 
@@ -36,12 +53,21 @@
           </div>
 
           <div class="flex lg:hidden group-hover:flex gap-4 w-fit">
-            <button class="hidden lg:flex px-4 py-2 text-xl bg-red-500 rounded-xl text-white">
-              Delete
+            <button 
+              onclick={() => deleteTask(task.id)}
+              class="px-4 py-2 bg-red-500 rounded-xl text-white"
+            >
+              -
             </button>
           </div>
         </li>
       {/each}
+      <li class="flex gap-4 w-full">
+        <button onclick={addTask} class="px-5 rounded-full bg-white text-black">
+          +
+        </button>
+        <input type="text" bind:value={task_input} class="bg-transparent pr-4 py-2 border-b w-full"/>
+      </li>
     </ul>
 
   {:else}
