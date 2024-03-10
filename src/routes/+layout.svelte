@@ -15,7 +15,7 @@
   );
 
   function comingSoon() {
-    toast("Coming soon!", { icon: "🙈", position: "bottom-end" });
+    toast("Coming soon!", { icon: "🙈", position: "top-center" });
   }
 
   onMount(() => {
@@ -26,9 +26,9 @@
 </script>
 
 <div class={`${theme_style} font-apfel flex flex-col w-full h-full min-w-screen min-h-screen p-8`}>
-  <main class="p-4 w-full h-full">
+  <section class="p-4 w-full h-full">
     <slot />
-  </main>
+  </section>
 
   <aside class="z-50 absolute inset-x-0 bottom-0 !text-black flex w-full h-fit items-end justify-between p-8">
     <div class="flex flex-col justify-start gap-4">

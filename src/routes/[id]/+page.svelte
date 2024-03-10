@@ -29,7 +29,7 @@
   }
 </script>
 
-<main class="flex flex-col w-full p-2 pb-12 lg:p-4 lg:pb-24 gap-8 text-xl lg:text-3xl">
+<main class="flex flex-col w-full px-2 pt-8 pb-12 lg:p-4 lg:pb-24 gap-8 text-xl lg:text-3xl">
   {#if list}
     <input 
       type="text" 
