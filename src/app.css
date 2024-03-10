@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: Apfel Grotezk;
+  src: url("/ApfelGrotezk-Regular.woff2"),
+       url("/ApfelGrotezk-Fett.woff2");
+}

@@ -1,10 +1,11 @@
 <script lang="ts">
   import "../app.css";
-  import { page } from "$app/stores";
   import { onMount } from "svelte";
-  import { fade } from "svelte/transition";
-  import { persisted, pinned_list } from "$lib/stores.svelte";
+  import { page } from "$app/stores";
   import { goto } from "$app/navigation";
+  import { fade } from "svelte/transition";
+  import toast, { Toaster } from "svelte-french-toast";
+  import { persisted, pinned_list } from "$lib/stores.svelte";
 
   const theme = persisted<string>("theme", "light");
   let is_menu_open = $state(false);
@@ -13,6 +14,10 @@
     : "text-white absolute top-0 z-[-2] h-screen w-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px]"
   );
 
+  function comingSoon() {
+    toast("Coming soon!", { icon: "🙈", position: "bottom-end" });
+  }
+
   onMount(() => {
     if ($page.url.pathname === "/") {
       goto(`/${pinned_list.value}`);
@@ -20,7 +25,7 @@
   });
 </script>
 
-<div class={`${theme_style} flex flex-col w-full h-full min-w-screen min-h-screen p-8`}>
+<div class={`${theme_style} font-apfel flex flex-col w-full h-full min-w-screen min-h-screen p-8`}>
   <main class="p-4 w-full h-full">
     <slot />
   </main>
@@ -32,11 +37,17 @@
           transition:fade={{ duration: 150 }}
           class={`${theme.value === "light" ? "border-black" : "border-[#00091d]"} w-fit border z-50 flex flex-col items-start gap-2 h-fit p-2 rounded-xl bg-white`}
         >
-          <button class="line-through flex gap-2 text-start w-full h-full rounded-xl pl-2 pr-5 py-2 hover:bg-slate-500/10 transition-all duration-150 items-center">
+          <button 
+            onclick={comingSoon}
+            class="flex gap-2 text-start w-full h-full rounded-xl pl-2 pr-5 py-2 hover:bg-slate-500/10 transition-all duration-150 items-center"
+          >
             <img src="/shooting-star.svg" alt="Item 1" class="w-8 h-8" />
             Try a new list
           </button>
-          <button class="line-through flex gap-2 text-start w-full h-full rounded-xl pl-2 pr-5 py-2 hover:bg-slate-500/10 transition-all duration-150 items-center">
+          <button 
+            onclick={comingSoon}
+            class="flex gap-2 text-start w-full h-full rounded-xl pl-2 pr-5 py-2 hover:bg-slate-500/10 transition-all duration-150 items-center"
+          >
             <img src="/sparkles-line.svg" alt="Item 2" class="w-8 h-8" />
             AI Suggestions 
           </button>
@@ -51,13 +62,21 @@
           <img src="/menu-line.svg" alt="Menu" class="w-12 h-12" />
         </button>
 
-        <a href="/explore" class="items-center h-fit w-full hover:bg-slate-500/10 rounded-full">
+        <!-- TODO: change to <a href='/explore'> -->
+        <button 
+          onclick={comingSoon}
+          class="items-center h-fit w-full hover:bg-slate-500/10 rounded-full"
+        >
           <img src="/planet-rocket.svg" alt="Explore Page" class="w-12 h-12"/>
-        </a>
+        </button>
 
-        <a href="/login" class="items-center h-fit w-full hover:bg-slate-500/10 rounded-full">
+        <!-- TODO: change to <a href='/login'> -->
+        <button 
+          onclick={comingSoon}
+          class="items-center h-fit w-full hover:bg-slate-500/10 rounded-full"
+        >
           <img src="/login-line.svg" alt="Login" class="w-12 h-12"/>
-        </a>
+        </button>
       </nav>
     </div>
 
@@ -73,4 +92,5 @@
       />
     </button>
   </aside>
+  <Toaster />
 </div>
