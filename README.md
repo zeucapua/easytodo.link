@@ -5,7 +5,7 @@ Do stuff the easy way. Explore what everyone's doing. No signup needed.
 ## Roadmap
 
 ### v0.1: 📝 Basic functionality 
-- [ ] Local first task list management (_in refactor_)
+- [x] Local first task list management
 
 ### v0.2: 🌐 Show and tell
 - [ ] Cloud sync with accounts
