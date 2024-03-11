@@ -2,10 +2,11 @@
 export default {
   content: ['./src/**/*.{html,js,svelte,ts}'],
   theme: {
-    extend: {}
+    extend: {
+      fontFamily: {
+        apfel: ["Apfel Grotezk"] 
+      }
+    }
   },
-  plugins: [require("daisyui")],
-  daisyui: {
-    themes: true
-  }
+  plugins: [],
 };
