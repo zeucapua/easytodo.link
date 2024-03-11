@@ -7,11 +7,11 @@
   import toast, { Toaster } from "svelte-french-toast";
   import { persisted, pinned_list } from "$lib/stores.svelte";
 
-  const theme = persisted<string>("theme", "light");
+  let theme = persisted<string>("theme", "dark");
   let is_menu_open = $state(false);
-  let theme_style = $derived(theme.value === "light"
-    ? "text-black absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"
-    : "text-white absolute top-0 z-[-2] h-screen w-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px]"
+  let theme_style = $derived(theme.value === "dark"
+    ? "text-white absolute top-0 z-[-2] h-screen w-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px]"
+    : "text-black absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"
   );
 
   function comingSoon() {
@@ -41,7 +41,7 @@
             onclick={comingSoon}
             class="flex gap-2 text-start w-full h-full rounded-xl pl-2 pr-5 py-2 hover:bg-slate-500/10 transition-all duration-150 items-center"
           >
-            <img src="/shooting-star.svg" alt="Item 1" class="w-8 h-8" />
+            <img src="/shooting-star-line.svg" alt="Item 1" class="w-8 h-8" />
             Try a new list
           </button>
           <button 
