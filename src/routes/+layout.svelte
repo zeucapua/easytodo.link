@@ -38,14 +38,20 @@
           class={`${theme.value === "light" ? "border-black" : "border-[#00091d]"} w-fit border z-50 flex flex-col items-start gap-2 h-fit p-2 rounded-xl bg-white`}
         >
           <button 
-            onclick={comingSoon}
+            onclick={() => {
+              comingSoon();
+              is_menu_open = false;
+            }}
             class="flex gap-2 text-start w-full h-full rounded-xl pl-2 pr-5 py-2 hover:bg-slate-500/10 transition-all duration-150 items-center"
           >
             <img src="/shooting-star-line.svg" alt="Item 1" class="w-8 h-8" />
             Try a new list
           </button>
           <button 
-            onclick={comingSoon}
+            onclick={() => {
+              comingSoon();
+              is_menu_open = false;
+            }}
             class="flex gap-2 text-start w-full h-full rounded-xl pl-2 pr-5 py-2 hover:bg-slate-500/10 transition-all duration-150 items-center"
           >
             <img src="/sparkles-line.svg" alt="Item 2" class="w-8 h-8" />

@@ -103,7 +103,10 @@
         <menu class="absolute flex flex-col gap-2 w-fit h-fit top-20 p-2 bg-white border border-black rounded-lg !text-black !text-lg">
           {#each user_lists as user_list : List (user_list.id)}
             <button
-              onclick={() => switchToList(user_list.id)}
+              onclick={() => {
+                switchToList(user_list.id)
+                is_menu_open = false;
+              }}
               class="flex gap-2 justify-between text-start w-full h-full rounded-xl pl-2 pr-5 py-2 hover:bg-slate-500/10 transition-all duration-150 items-center"
             >
               {user_list.title.length > 0 ? user_list.title : "Untitled"}
@@ -113,7 +116,10 @@
             </button>
           {/each}
           <button
-            onclick={createList}
+            onclick={() => {
+              createList();
+              is_menu_open = false;
+            }}
             class="flex gap-2 justify-between text-start w-full h-full rounded-xl pl-2 pr-5 py-2 hover:bg-slate-500/10 transition-all duration-150 items-center"
           >
             Create new list
