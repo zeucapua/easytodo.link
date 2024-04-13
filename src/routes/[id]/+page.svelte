@@ -72,7 +72,7 @@
   }
 </script>
 
-<main class="flex flex-col w-full px-2 pt-8 pb-12 lg:p-4 lg:pb-24 gap-8 text-xl lg:text-3xl">
+<main class="flex flex-col w-full px-2 pt-8 pb-28 lg:px-4 lg:pt-4  gap-8 text-xl lg:text-3xl">
   {#if list}
     <section class="relative flex gap-4 w-full">
       <div class="flex gap-4 border-black border w-fit h-fit p-2 bg-white rounded-xl">
