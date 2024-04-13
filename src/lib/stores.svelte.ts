@@ -1,5 +1,8 @@
 import { alphabet, generateRandomString } from "oslo/crypto";
+import { writable } from 'svelte/store';
 
+// Create a writable store with 'dark' as the default value
+export const theme = writable<string>('dark');
 // Browser + Local Storage
 const browser_exists = (typeof window !== "undefined") && (typeof (document) !== "undefined");
 const storage = browser_exists ? localStorage : null;

@@ -1,15 +1,19 @@
 <script lang="ts">
-  import { onMount, tick } from "svelte";
+  import { onMount } from "svelte";
   import { page } from "$app/stores";
-  import { local_lists, pinned_list, generateId, type List } from "$lib/stores.svelte";
-  import { goto, pushState } from "$app/navigation";
-  import toast, { Toaster } from "svelte-french-toast";
-
+  import { local_lists, pinned_list, generateId, persisted, type List } from "$lib/stores.svelte";
+  import { goto } from "$app/navigation";
+  import toast from "svelte-french-toast";
+  import { fade } from "svelte/transition";
   let is_menu_open = $state(false);
+  let is_input_menu_open = $state(false);
   let list : List | undefined = $state(); 
   let task_input = $state("");
   let user_lists = $derived(local_lists.value) as List[];
-
+ import { theme } from "$lib/stores.svelte.ts";
+  function comingSoon() {
+    toast("Coming soon!", { icon: "🙈", position: "top-center" });
+  }
   onMount(() => {
     list = local_lists.value!.find((l) => l.id === $page.params.id); 
   });
@@ -73,9 +77,9 @@
 </script>
 
 <main class="flex flex-col w-full px-2 pt-8 pb-12 lg:p-4 lg:pb-24 gap-8 text-xl lg:text-3xl">
-  {#if list}
-    <section class="relative flex gap-4 w-full">
-      <div class="flex gap-4 border-black border w-fit h-fit p-2 bg-white rounded-xl">
+  {#if list} 
+    <section class="relative flex justify-between items-center w-full">
+      <div class="flex justify-between items-center gap-4 border-black border w-fit h-fit p-2 bg-white rounded-xl">
         <button onclick={() => is_menu_open = !is_menu_open}>
           <img
             src="/list-box-line.svg"
@@ -98,7 +102,18 @@
           />
         </button>
       </div>
-
+      <div>
+      <button 
+      onclick={() => { $theme = $theme === "light" ? "dark" : "light" }}
+      class={`${$theme === "light" ? "border-black" : "border-[#00091d]"} border w-fit h-fit p-2 bg-white rounded-xl`}
+    >
+      <img
+        src="/light-bulb.svg"
+        alt="Theme toggle button"
+        class="w-12 h-12 hover:bg-slate-500/10 rounded-full"
+      />
+    </button>
+    </div>
       {#if is_menu_open}
         <menu class="absolute flex flex-col gap-2 w-fit h-fit top-20 p-2 bg-white border border-black rounded-lg !text-black !text-lg">
           {#each user_lists as user_list : List (user_list.id)}
@@ -152,16 +167,67 @@
             </button>
           </div>
         </li>
-      {/each}
-      <li class="flex gap-4 w-full">
+        {/each}
+<li>
+    <aside class="absolue bottom-0 !text-black flex justify-between items-center w-full h-fit p-8">
+      <div class="flex gap-4 w-full mr-0">
         <button onclick={addTask} class="px-5 rounded-full bg-white text-black">
           +
         </button>
         <input type="text" bind:value={task_input} class="bg-transparent pr-4 py-2 border-b w-full"/>
-      </li>
-    </ul>
-
+      </div>
+      <div class="flex flex-col justify-start gap-4 ml-auto">
+        {#if is_input_menu_open}
+          <menu 
+            transition:fade={{ duration: 150 }}
+            class={`${$theme === "light" ? "border-black" : "border-[#00091d]"} w-fit border z-50 flex flex-col items-start gap-2 h-fit p-2 rounded-xl bg-white`}
+          >
+            <button 
+              onclick={comingSoon}
+              class="flex gap-2 text-start w-full h-full rounded-xl pl-2 pr-5 py-2 hover:bg-slate-500/10 transition-all duration-150 items-center"
+            >
+              <img src="/shooting-star-line.svg" alt="Item 1" class="w-8 h-8" />
+              Try a new list
+            </button>
+            <button 
+              onclick={comingSoon}
+              class="flex gap-2 text-start w-full h-full rounded-xl pl-2 pr-5 py-2 hover:bg-slate-500/10 transition-all duration-150 items-center"
+            >
+              <img src="/sparkles-line.svg" alt="Item 2" class="w-8 h-8" />
+              AI Suggestions 
+            </button>
+          </menu>
+        {/if}
+  
+        <nav class={`${$theme === "light" ? "border-black" : "border-[#00091d]"} border z-50 flex self-center items-center gap-4 mx-auto w-fit h-fit p-2 rounded-xl bg-white`}>
+          <button 
+            onclick={() => is_input_menu_open = !is_input_menu_open} 
+            class="w-full h-fit hover:bg-slate-500/10 rounded-full"
+          >
+            <img src="/menu-line.svg" alt="Menu" class="w-12 h-12" />
+          </button>
+  
+          <!-- TODO: change to <a href='/explore'> -->
+          <button 
+            onclick={comingSoon}
+            class="items-center h-fit w-full hover:bg-slate-500/10 rounded-full"
+          >
+            <img src="/planet-rocket.svg" alt="Explore Page" class="w-12 h-12"/>
+          </button>
+          <!-- TODO: change to <a href='/login'> -->
+          <button 
+            onclick={comingSoon}
+            class="items-center h-fit w-full hover:bg-slate-500/10 rounded-full"
+          >
+            <img src="/login-line.svg" alt="Login" class="w-12 h-12"/>
+          </button>
+        </nav>
+      </div>
+    </aside>
+    </li>
+  </ul>
   {:else}
     <p>Loading...</p>
   {/if}
+  
 </main>
