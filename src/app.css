@@ -4,6 +4,5 @@
 
 @font-face {
   font-family: Apfel Grotezk;
-  src: url("/ApfelGrotezk-Regular.woff2"),
-       url("/ApfelGrotezk-Fett.woff2");
+  src: url("/ApfelGrotezk-Regular.woff2"), url("/ApfelGrotezk-Fett.woff2");
 }

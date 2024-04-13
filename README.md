@@ -4,14 +4,17 @@ Do stuff the easy way. Explore what everyone's doing. No signup needed.
 
 ## Roadmap
 
-### v0.1: 📝 Basic functionality 
+### v0.1: 📝 Basic functionality
+
 - [x] Local first task list management
 
 ### v0.2: 🌐 Show and tell
+
 - [ ] Cloud sync with accounts
 - [ ] Share and explore public lists
 
-### v0.3: ✨ Work smarter 
+### v0.3: ✨ Work smarter
+
 - [ ] AI task suggestions
 
 ## Made with

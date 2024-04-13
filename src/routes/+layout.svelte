@@ -4,7 +4,7 @@
   import { page } from "$app/stores";
   import { goto } from "$app/navigation";
   import { Toaster } from "svelte-french-toast";
-  import { persisted, pinned_list } from "$lib/stores.svelte";
+  import { pinned_list } from "$lib/stores.svelte";
    import { theme } from "$lib/stores.svelte.ts";
 let theme_style: string;
 theme.subscribe((value: string) => {
