@@ -25,13 +25,13 @@
   });
 </script>
 
-<div class={`${theme_style} font-apfel flex flex-col w-full h-full min-w-screen min-h-screen p-8`}>
+<div class={`${theme_style} font-apfel flex flex-col w-full h-full min-w-screen min-h-screen p-8 overflow-auto`}>
   <section class="p-4 w-full h-full">
     <slot />
   </section>
 
-  <aside class="z-50 absolute inset-x-0 bottom-0 !text-black flex w-full h-fit items-end justify-between p-8">
-    <div class="flex flex-col justify-start gap-4">
+  <aside class="z-50 fixed inset-x-0 bottom-0 !text-black flex w-full h-fit items-end justify-between p-8 pointer-events-none">
+    <div class="flex flex-col justify-start gap-4 pointer-events-auto">
       {#if is_menu_open}
         <menu 
           transition:fade={{ duration: 150 }}
@@ -83,7 +83,7 @@
 
     <button 
       onclick={() => { theme.value = theme.value === "light" ? "dark" : "light" }}
-      class={`${theme.value === "light" ? "border-black" : "border-[#00091d]"} border w-fit h-fit p-2 bg-white rounded-xl`}
+      class={`${theme.value === "light" ? "border-black" : "border-[#00091d]"} border w-fit h-fit p-2 bg-white rounded-xl pointer-events-auto`}
     >
       <img
         src="/light-bulb.svg"
