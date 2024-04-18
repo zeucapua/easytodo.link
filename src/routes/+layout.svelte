@@ -85,7 +85,7 @@
       {/if}
       {#if is_font_menu_open}
       <menu
-          class={`${theme.value === "light" ? "border-black" : "border-[#00091d]"} w-fit border z-50 flex flex-col items-center gap-2 h-fit p-2 rounded-xl bg-white ml-[50px]`}
+          class={`${theme.value === "light" ? "border-black" : "border-[#00091d]"} w-fit border z-50 flex flex-col items-center gap-2 h-fit p-2 rounded-xl bg-white ml-[75px]`}
         >
           <button
             onclick={() => { font_size.value = "small"; } }
