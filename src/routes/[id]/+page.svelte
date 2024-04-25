@@ -159,7 +159,7 @@
         </li>
       {/each}
       <li class="flex gap-4 w-full">
-        <button onclick={addTask} class="px-5 rounded-full bg-white text-black">
+        <button onclick={addTask} class="px-5 rounded-full border border-black bg-white text-black">
           +
         </button>
         <input type="text" bind:value={task_input} class="bg-transparent pr-4 py-2 border-b w-full"/>
