@@ -1,10 +1,9 @@
 <script lang="ts">
-  import { onMount, tick } from "svelte";
+  import { onMount } from "svelte";
   import { page } from "$app/stores";
   import { local_lists, pinned_list, generateId, type List } from "$lib/stores.svelte";
-  import { goto, pushState } from "$app/navigation";
-  import toast, { Toaster } from "svelte-french-toast";
-
+  import { goto } from "$app/navigation";
+  import toast from "svelte-french-toast";
   let is_menu_open = $state(false);
   let list : List | undefined = $state(); 
   let task_input = $state("");
@@ -160,7 +159,7 @@
         </li>
       {/each}
       <li class="flex gap-4 w-full">
-        <button onclick={addTask} class="px-5 rounded-full bg-white text-black">
+        <button onclick={addTask} class="px-5 rounded-full border border-black bg-white text-black">
           +
         </button>
         <input type="text" bind:value={task_input} class="bg-transparent pr-4 py-2 border-b w-full"/>
