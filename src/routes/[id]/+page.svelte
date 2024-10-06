@@ -1,18 +1,13 @@
 <script lang="ts">
-  import { onMount, tick } from "svelte";
   import { page } from "$app/stores";
   import { local_lists, pinned_list, generateId, type List } from "$lib/stores.svelte";
-  import { goto, pushState } from "$app/navigation";
-  import toast, { Toaster } from "svelte-french-toast";
+  import { goto } from "$app/navigation";
+  import toast from "svelte-french-toast";
 
   let is_menu_open = $state(false);
-  let list : List | undefined = $state(); 
+  let list : List | undefined = $state(local_lists.value!.find((l) => l.id === $page.params.id));
   let task_input = $state("");
   let user_lists = $derived(local_lists.value) as List[];
-
-  onMount(() => {
-    list = local_lists.value!.find((l) => l.id === $page.params.id); 
-  });
 
   // since list points to something inside local_lists,
   // it will run when list state changes
