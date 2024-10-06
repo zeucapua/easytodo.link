@@ -9,6 +9,7 @@ Do stuff the easy way. Explore what everyone's doing. No signup needed.
 
 ### v0.2: 🌐 Show and tell
 - [ ] Cloud sync with accounts
+- [ ] Multiplayer Lists (1-way mirror/sync)
 - [ ] Share and explore public lists
 
 ### v0.3: ✨ Work smarter 
