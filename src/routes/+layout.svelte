@@ -6,6 +6,11 @@
   import { fade } from "svelte/transition";
   import toast, { Toaster } from "svelte-french-toast";
   import { persisted, pinned_list } from "$lib/stores.svelte";
+  interface Props {
+    children?: import('svelte').Snippet;
+  }
+
+  let { children }: Props = $props();
 
   let theme = persisted<string>("theme", "dark");
   let is_menu_open = $state(false);
@@ -27,7 +32,7 @@
 
 <div class={`${theme_style} font-apfel flex flex-col w-full h-full min-w-screen min-h-screen p-8 overflow-auto`}>
   <section class="p-4 w-full h-full">
-    <slot />
+    {@render children?.()}
   </section>
 
   <aside class="z-50 fixed inset-x-0 bottom-0 !text-black flex w-full h-fit items-end justify-between p-8 pointer-events-none">
