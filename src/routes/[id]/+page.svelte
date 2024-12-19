@@ -1,8 +1,9 @@
 <script lang="ts">
   import { page } from "$app/state";
-  import { local_lists, pinned_list, generateId, type List } from "$lib/stores.svelte";
+  import { local_lists, pinned_list, generateId, type List, type Task, formatSecondsToDuration } from "$lib/stores.svelte";
   import { goto } from "$app/navigation";
   import toast from "svelte-french-toast";
+  import { onMount } from "svelte";
 
   let is_menu_open = $state(false);
   let list : List | undefined = $state(local_lists.value!.find((l) => l.id === page.params.id));
@@ -31,6 +32,24 @@
   function deleteTask(id: string) {
     if (list) {
       list.tasks = list.tasks.filter((t) => t.id !== id);
+    }
+  }
+
+  function toggleInterval(id: string) {
+    if (list) {
+      const task = list.tasks.find((t) => t.id === id) as Task;
+      if (task.stopwatchInterval) {
+        clearInterval(task.stopwatchInterval);
+        task.stopwatchInterval = undefined;
+      }
+      else {
+        if (!task.duration) { task.duration = 0; }
+        const interval = setInterval(() => {
+          // @ts-ignore
+          task.duration += 1;
+        }, 1000);
+        task.stopwatchInterval = interval;
+      }
     }
   }
 
@@ -65,6 +84,22 @@
     list = local_lists.value.find((l) => l.id === pinned_list.value);
     goto(`/${list!.id}`);
   }
+
+  onMount(() => {
+    if (list) {
+      for (const task of list.tasks) {
+        // if a task's stopwatch is still running
+        // remove it so the user can start it again in one click
+        // instead of two cause the first `toggleInterval` would
+        // just remove the interval
+        if (task.stopwatchInterval) {
+          clearInterval(task.stopwatchInterval);
+          task.stopwatchInterval = undefined;
+          local_lists.update();
+        }
+      }
+    }
+  });
 </script>
 
 <main class="flex flex-col w-full px-2 pt-8 pb-28 lg:px-4 lg:pt-4  gap-8 text-xl lg:text-3xl">
@@ -122,12 +157,14 @@
         </menu>
       {/if}
     </section>
-        <input 
-          type="text" 
-          bind:value={list.title} 
-          placeholder="Untitled"
-          class="text-5xl font-bold bg-transparent"
-        />
+
+    <input 
+      type="text" 
+      bind:value={list.title} 
+      placeholder="Untitled"
+      class="text-5xl font-bold bg-transparent"
+    />
+
     <ul class="flex flex-col gap-4">
       {#each list.tasks as task (task.id)}
         <li class="group flex justify-between items-center gap-4">
@@ -144,7 +181,13 @@
             />
           </div>
 
-          <div class="flex gap-4 w-fit">
+          <div class="flex gap-4 w-fit items-center">
+            <button
+              onclick={() => toggleInterval(task.id)} 
+              class="w-fit h-fit tabular-nums text-lg"
+            >
+              {formatSecondsToDuration(task.duration!)}
+            </button>
             <button 
               onclick={() => deleteTask(task.id)}
               class="px-4 py-2 bg-red-500 rounded-xl text-white"
