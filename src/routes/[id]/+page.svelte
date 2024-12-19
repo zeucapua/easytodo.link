@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { page } from "$app/stores";
+  import { page } from "$app/state";
   import { local_lists, pinned_list, generateId, type List } from "$lib/stores.svelte";
   import { goto } from "$app/navigation";
   import toast from "svelte-french-toast";
 
   let is_menu_open = $state(false);
-  let list : List | undefined = $state(local_lists.value!.find((l) => l.id === $page.params.id));
+  let list : List | undefined = $state(local_lists.value!.find((l) => l.id === page.params.id));
   let task_input = $state("");
   let user_lists = $derived(local_lists.value) as List[];
 
@@ -56,12 +56,12 @@
   }
 
   function deleteList() {
-    if (pinned_list.value === $page.params.id) {
+    if (pinned_list.value === page.params.id) {
       toast.error("Cannot delete pinned list");
       return;
     }
 
-    local_lists.value = local_lists.value!.filter((l) => l.id !== $page.params.id);
+    local_lists.value = local_lists.value!.filter((l) => l.id !== page.params.id);
     list = local_lists.value.find((l) => l.id === pinned_list.value);
     goto(`/${list!.id}`);
   }
@@ -140,11 +140,11 @@
             <input 
               type="text" 
               bind:value={task.description}
-              class="w-full hover:underline text-ellipsis overflow-hidden bg-transparent"
+              class={`w-full hover:underline text-ellipsis overflow-hidden bg-transparent ${task.is_completed && "text-white/50"}`}
             />
           </div>
 
-          <div class="flex lg:hidden group-hover:flex gap-4 w-fit">
+          <div class="flex gap-4 w-fit">
             <button 
               onclick={() => deleteTask(task.id)}
               class="px-4 py-2 bg-red-500 rounded-xl text-white"
@@ -155,10 +155,10 @@
         </li>
       {/each}
       <li class="flex gap-4 w-full">
+        <input type="text" bind:value={task_input} class="bg-transparent pr-4 py-2 border-b w-full"/>
         <button onclick={addTask} class="px-5 rounded-full bg-white text-black">
           +
         </button>
-        <input type="text" bind:value={task_input} class="bg-transparent pr-4 py-2 border-b w-full"/>
       </li>
     </ul>
 

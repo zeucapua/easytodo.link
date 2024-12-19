@@ -1,7 +1,7 @@
 <script lang="ts">
   import "../app.css";
   import { onMount } from "svelte";
-  import { page } from "$app/stores";
+  import { page } from "$app/state";
   import { goto } from "$app/navigation";
   import { fade } from "svelte/transition";
   import toast, { Toaster } from "svelte-french-toast";
@@ -24,7 +24,7 @@
   }
 
   onMount(() => {
-    if ($page.url.pathname === "/") {
+    if (page.url.pathname === "/") {
       goto(`/${pinned_list.value}`);
     }
   });
