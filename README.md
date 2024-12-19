@@ -6,6 +6,7 @@ Do stuff the easy way. Explore what everyone's doing. No signup needed.
 
 ### v0.1: 📝 Basic functionality 
 - [x] Local first task list management
+- [x] Timer per task
 
 ### v0.2: 🌐 Show and tell
 - [ ] Cloud sync with accounts
