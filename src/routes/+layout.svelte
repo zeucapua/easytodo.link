@@ -1,13 +1,14 @@
 <script lang="ts">
   import "../app.css";
-  import { onMount } from "svelte";
+  import { onMount, type Snippet } from "svelte";
   import { page } from "$app/state";
   import { goto } from "$app/navigation";
   import { fade } from "svelte/transition";
   import toast, { Toaster } from "svelte-french-toast";
   import { persisted, pinned_list } from "$lib/stores.svelte";
+
   interface Props {
-    children?: import('svelte').Snippet;
+    children: Snippet
   }
 
   let { children }: Props = $props();
@@ -32,7 +33,7 @@
 
 <div class={`${theme_style} font-apfel flex flex-col w-full h-full min-w-screen min-h-screen p-8 overflow-auto`}>
   <section class="p-4 w-full h-full">
-    {@render children?.()}
+    {@render children()}
   </section>
 
   <aside class="z-50 fixed inset-x-0 bottom-0 !text-black flex w-full h-fit items-end justify-between p-8 pointer-events-none">
