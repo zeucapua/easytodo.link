@@ -39,11 +39,11 @@
   <aside class="z-50 fixed inset-x-0 bottom-0 !text-black flex w-full h-fit items-end justify-between p-8 pointer-events-none">
     <div class="flex flex-col justify-start gap-4 pointer-events-auto">
       {#if is_menu_open}
-        <menu 
+        <menu
           transition:fade={{ duration: 150 }}
           class={`${theme.value === "light" ? "border-black" : "border-[#00091d]"} w-fit border z-50 flex flex-col items-start gap-2 h-fit p-2 rounded-xl bg-white`}
         >
-          <button 
+          <button
             onclick={() => {
               comingSoon();
               is_menu_open = false;
@@ -53,7 +53,7 @@
             <img src="/shooting-star-line.svg" alt="Item 1" class="w-8 h-8" />
             Try a new list
           </button>
-          <button 
+          <button
             onclick={() => {
               comingSoon();
               is_menu_open = false;
@@ -61,21 +61,21 @@
             class="flex gap-2 text-start w-full h-full rounded-xl pl-2 pr-5 py-2 hover:bg-slate-500/10 transition-all duration-150 items-center"
           >
             <img src="/sparkles-line.svg" alt="Item 2" class="w-8 h-8" />
-            AI Suggestions 
+            AI Suggestions
           </button>
         </menu>
       {/if}
 
       <nav class={`${theme.value === "light" ? "border-black" : "border-[#00091d]"} border z-50 flex self-center items-center gap-4 mx-auto w-fit h-fit p-2 rounded-xl bg-white`}>
-        <button 
-          onclick={() => is_menu_open = !is_menu_open} 
+        <button
+          onclick={() => is_menu_open = !is_menu_open}
           class="w-full h-fit hover:bg-slate-500/10 rounded-full"
         >
           <img src="/menu-line.svg" alt="Menu" class="w-12 h-12" />
         </button>
 
         <!-- TODO: change to <a href='/explore'> -->
-        <button 
+        <button
           onclick={comingSoon}
           class="items-center h-fit w-full hover:bg-slate-500/10 rounded-full"
         >
@@ -83,7 +83,7 @@
         </button>
 
         <!-- TODO: change to <a href='/login'> -->
-        <button 
+        <button
           onclick={comingSoon}
           class="items-center h-fit w-full hover:bg-slate-500/10 rounded-full"
         >
@@ -93,7 +93,7 @@
     </div>
 
 
-    <button 
+    <button
       onclick={() => { theme.value = theme.value === "light" ? "dark" : "light" }}
       class={`${theme.value === "light" ? "border-black" : "border-[#00091d]"} border w-fit h-fit p-2 bg-white rounded-xl pointer-events-auto`}
     >
@@ -106,3 +106,7 @@
   </aside>
   <Toaster />
 </div>
+
+<style lang="postcss">
+	@reference "tailwindcss";
+</style>
