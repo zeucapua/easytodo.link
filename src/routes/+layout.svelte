@@ -5,7 +5,8 @@
   import { goto } from "$app/navigation";
   import { fade } from "svelte/transition";
   import toast, { Toaster } from "svelte-french-toast";
-  import { persisted, pinned_list } from "$lib/stores.svelte";
+  import { local_lists, pinned_list } from "$lib/stores.svelte";
+	import { PersistedState } from "runed";
 
   interface Props {
     children: Snippet
@@ -13,9 +14,9 @@
 
   let { children }: Props = $props();
 
-  let theme = persisted<string>("theme", "dark");
+  let theme = new PersistedState<string>("theme", "dark");
   let is_menu_open = $state(false);
-  let theme_style = $derived(theme.value === "dark"
+  let theme_style = $derived(theme.current=== "dark"
     ? "text-white absolute top-0 z-[-2] h-screen w-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px]"
     : "text-black absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"
   );
@@ -24,9 +25,15 @@
     toast("Coming soon!", { icon: "🙈", position: "top-center" });
   }
 
+	$effect(() => {
+		if (!pinned_list.current && local_lists.current[0]) {
+			pinned_list.current = local_lists.current[0].id;
+		}
+	});
+
   onMount(() => {
-    if (page.url.pathname === "/") {
-      goto(`/${pinned_list.value}`);
+    if (page.url.pathname === "/" && pinned_list.current) {
+      goto(`/${pinned_list.current}`);
     }
   });
 </script>
@@ -41,7 +48,7 @@
       {#if is_menu_open}
         <menu
           transition:fade={{ duration: 150 }}
-          class={`${theme.value === "light" ? "border-black" : "border-[#00091d]"} w-fit border z-50 flex flex-col items-start gap-2 h-fit p-2 rounded-xl bg-white`}
+          class={`${theme.current === "light" ? "border-black" : "border-[#00091d]"} w-fit border z-50 flex flex-col items-start gap-2 h-fit p-2 rounded-xl bg-white`}
         >
           <button
             onclick={() => {
@@ -66,7 +73,7 @@
         </menu>
       {/if}
 
-      <nav class={`${theme.value === "light" ? "border-black" : "border-[#00091d]"} border z-50 flex self-center items-center gap-4 mx-auto w-fit h-fit p-2 rounded-xl bg-white`}>
+      <nav class={`${theme.current === "light" ? "border-black" : "border-[#00091d]"} border z-50 flex self-center items-center gap-4 mx-auto w-fit h-fit p-2 rounded-xl bg-white`}>
         <button
           onclick={() => is_menu_open = !is_menu_open}
           class="w-full h-fit hover:bg-slate-500/10 rounded-full"
@@ -94,8 +101,8 @@
 
 
     <button
-      onclick={() => { theme.value = theme.value === "light" ? "dark" : "light" }}
-      class={`${theme.value === "light" ? "border-black" : "border-[#00091d]"} border w-fit h-fit p-2 bg-white rounded-xl pointer-events-auto`}
+      onclick={() => { theme.current = theme.current === "light" ? "dark" : "light" }}
+      class={`${theme.current === "light" ? "border-black" : "border-[#00091d]"} border w-fit h-fit p-2 bg-white rounded-xl pointer-events-auto`}
     >
       <img
         src="/light-bulb.svg"

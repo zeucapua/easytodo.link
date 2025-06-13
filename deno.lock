@@ -7,6 +7,7 @@
     "npm:@tailwindcss/vite@^4.1.8": "4.1.8_vite@6.3.5__picomatch@4.0.2",
     "npm:oslo@^1.2.1": "1.2.1",
     "npm:postcss@^8.5.4": "8.5.4",
+    "npm:runed@0.28": "0.28.0_svelte@5.33.17__acorn@8.14.1",
     "npm:svelte-check@^4.2.1": "4.2.1_svelte@5.33.17__acorn@8.14.1_typescript@5.8.3",
     "npm:svelte-french-toast@^1.2.0": "1.2.0_svelte@5.33.17__acorn@8.14.1",
     "npm:svelte@^5.33.16": "5.33.17_acorn@8.14.1",
@@ -995,6 +996,13 @@
       ],
       "bin": true
     },
+    "runed@0.28.0_svelte@5.33.17__acorn@8.14.1": {
+      "integrity": "sha512-k2xx7RuO9hWcdd9f+8JoBeqWtYrm5CALfgpkg2YDB80ds/QE4w0qqu34A7fqiAwiBBSBQOid7TLxwxVC27ymWQ==",
+      "dependencies": [
+        "esm-env",
+        "svelte"
+      ]
+    },
     "sade@1.8.1": {
       "integrity": "sha512-xal3CZX1Xlo/k4ApwCFrHVACi9fBqJ7V+mwhBsuf/1IOKbBy098Fex+Wa/5QMubw09pSZ/u8EY8PWgevJsXp1A==",
       "dependencies": [
@@ -1136,6 +1144,7 @@
         "npm:@sveltejs/vite-plugin-svelte@^5.1.0",
         "npm:@tailwindcss/vite@^4.1.8",
         "npm:oslo@^1.2.1",
+        "npm:runed@0.28",
         "npm:svelte-check@^4.2.1",
         "npm:svelte-french-toast@^1.2.0",
         "npm:svelte@^5.33.16",

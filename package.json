@@ -23,6 +23,7 @@
 	"dependencies": {
 		"@tailwindcss/vite": "^4.1.8",
 		"oslo": "^1.2.1",
+		"runed": "^0.28.0",
 		"svelte-french-toast": "^1.2.0",
 		"tailwindcss": "^4.1.8"
 	}
