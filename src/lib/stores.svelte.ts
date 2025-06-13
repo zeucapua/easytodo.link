@@ -26,6 +26,7 @@ export const local_lists = new PersistedState<List[]>(
 				{ id: generateId(), description: "Stand up and stretch", is_completed: false },
 				{ id: generateId(), description: "Go outside for 10 seconds", is_completed: false }, ]
 	}],
+	{ syncTabs: true }
 );
 
 export const pinned_list = new PersistedState<string>("pinned_list", "");

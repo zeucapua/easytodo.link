@@ -6,7 +6,7 @@
   import { onMount } from "svelte";
 
   let is_menu_open = $state(false);
-  let list : List | undefined = $state(local_lists.current!.find((l) => l.id === page.params.id));
+  let list : List | undefined = $derived(local_lists.current!.find((l) => l.id === page.params.id));
   let task_input = $state("");
   let user_lists = $derived(local_lists.current) as List[];
 
@@ -44,7 +44,7 @@
           // @ts-ignore
           task.duration += 1;
         }, 1000);
-        task.stopwatchInterval = interval;
+        task.stopwatchInterval = interval as unknown as number;
       }
     }
   }
@@ -80,6 +80,8 @@
     list = local_lists.current.find((l) => l.id === pinned_list.current);
     goto(`/${list!.id}`);
   }
+
+	$inspect(list?.tasks[0]);
 
   onMount(() => {
     if (list) {
