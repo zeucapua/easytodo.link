@@ -1,6 +1,6 @@
 # easytodo.link
 
-Do stuff the easy way. Explore what everyone's doing. No signup needed.
+Superpowered to do lists. No signup required.
 
 ## Roadmap
 
@@ -10,11 +10,12 @@ Do stuff the easy way. Explore what everyone's doing. No signup needed.
 
 ### v0.2: 🌐 Show and tell
 - [ ] Cloud sync with accounts
-- [ ] Multiplayer Lists (1-way mirror/sync)
 - [ ] Share and explore public lists
+- [ ] Multiplayer Lists (1-way mirror/sync)
 
 ### v0.3: ✨ Work smarter 
 - [ ] AI task suggestions
+- [ ] Task blocks (notes, embeds, links, etc.)
 
 ## Made with
 
