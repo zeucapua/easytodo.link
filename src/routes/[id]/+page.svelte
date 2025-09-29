@@ -1,9 +1,10 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import { page } from "$app/state";
-  import { local_lists, pinned_list, generateId, type List, type Task, formatSecondsToDuration } from "$lib/stores.svelte";
   import { goto } from "$app/navigation";
   import toast from "svelte-french-toast";
-  import { onMount } from "svelte";
+  import { formatSecondsToDuration, generateId } from "$lib/utils";
+  import { local_lists, pinned_list, type List, type Task } from "$lib/stores.svelte";
 
   let is_menu_open = $state(false);
   let list : List | undefined = $state(local_lists.value!.find((l) => l.id === page.params.id));
@@ -43,9 +44,8 @@
         task.stopwatchInterval = undefined;
       }
       else {
-        if (!task.duration) { task.duration = 0; }
         const interval = setInterval(() => {
-          // @ts-ignore
+          if (!task.duration) { task.duration = 0; }
           task.duration += 1;
         }, 1000);
         task.stopwatchInterval = interval;
