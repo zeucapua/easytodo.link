@@ -1,20 +1,20 @@
 <script lang="ts">
   import "../app.css";
-  import { onMount, type Snippet } from "svelte";
+  import { onMount } from "svelte";
   import { page } from "$app/state";
   import { goto } from "$app/navigation";
   import { fade } from "svelte/transition";
+  import type { LayoutProps } from "./$types";
   import toast, { Toaster } from "svelte-french-toast";
   import { persisted, pinned_list } from "$lib/stores.svelte";
 
-  interface Props {
-    children: Snippet
-  }
-
-  let { children }: Props = $props();
+  let { data, children }: LayoutProps = $props();
+  let { user } = $derived(data);
 
   let theme = persisted<string>("theme", "dark");
   let is_menu_open = $state(false);
+  let loginDialog = $state<HTMLDialogElement>();
+  let accountDialog = $state<HTMLDialogElement>();
   let theme_style = $derived(theme.value === "dark"
     ? "text-white absolute top-0 z-[-2] h-screen w-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-size-[20px_20px]"
     : "text-black absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px]"
@@ -35,6 +35,23 @@
   <section class="p-4 w-full h-full">
     {@render children()}
   </section>
+
+  <dialog bind:this={loginDialog} class="bg-white">
+    <h1>Login with ATProto</h1>
+    <button onclick={() => loginDialog?.close()}>Close</button>
+    <form method="POST" action="/?/login">
+      <input name="handle" type="text" placeholder="zeu.dev" />
+      <button type="submit">Login</button>
+    </form>
+  </dialog>
+
+  <dialog bind:this={accountDialog} class="bg-white">
+    <h1>Account</h1>
+    <button onclick={() => accountDialog?.close()}>Close</button>
+    <form method="POST" action="/?/logout">
+      <button type="submit">Logout</button>
+    </form>
+  </dialog>
 
   <aside class="z-50 fixed inset-x-0 bottom-0 text-black! flex w-full h-fit items-end justify-between p-8 pointer-events-none">
     <div class="flex flex-col justify-start gap-4 pointer-events-auto">
@@ -83,12 +100,21 @@
         </button>
 
         <!-- TODO: change to <a href='/login'> -->
-        <button
-          onclick={comingSoon}
-          class="items-center h-fit w-full hover:bg-slate-500/10 rounded-full"
-        >
-          <img src="/login-line.svg" alt="Login" class="w-12 h-12"/>
-        </button>
+        {#if !user}
+          <button
+            onclick={() => loginDialog?.showModal()}
+            class="items-center h-fit w-full hover:bg-slate-500/10 rounded-full"
+          >
+            <img src="/login-line.svg" alt="Login" class="w-12 h-12"/>
+          </button>
+        {:else}
+          <button
+            onclick={() => accountDialog?.showModal()}
+            class="items-center h-fit w-full rounded-full"
+          >
+            <img src={user.avatar || "/user-line.svg"} alt="Login" class="w-10 h-10 rounded-full" />
+          </button>
+        {/if}
       </nav>
     </div>
 
@@ -106,7 +132,3 @@
   </aside>
   <Toaster />
 </div>
-
-<style lang="postcss">
-	@reference "tailwindcss";
-</style>
