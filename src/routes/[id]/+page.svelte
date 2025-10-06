@@ -1,12 +1,17 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { page } from "$app/state";
+  import { enhance } from "$app/forms";
   import { goto } from "$app/navigation";
   import toast from "svelte-french-toast";
+  import type { PageProps } from "../$types.js";
   import { formatSecondsToDuration, generateId } from "$lib/utils";
   import { local_lists, pinned_list, type List, type Task } from "$lib/stores.svelte";
 
-  let is_menu_open = $state(false);
+  let { data, form }: PageProps = $props();
+  let { user } = $derived(data);
+  let is_lists_menu_open = $state(false);
+  let is_cloud_menu_open = $state(false);
   let list : List | undefined = $state(local_lists.value!.find((l) => l.id === page.params.id));
   let task_input = $state("");
   let user_lists = $derived(local_lists.value) as List[];
@@ -14,6 +19,12 @@
   // since list points to something inside local_lists,
   // it will run when list state changes
   $effect(() => local_lists.update());
+
+  $effect(() => {
+    if (form?.saveListRecordResult.success) {
+      toast.success("Successfully saved to PDS!");
+    }
+  });
 
   function addTask() {
     if (task_input.length === 0) {
@@ -106,10 +117,10 @@
   {#if list}
     <section class="relative flex gap-4 w-full">
       <div class="flex gap-4 border-black border w-fit h-fit p-2 bg-white rounded-xl">
-        <button onclick={() => is_menu_open = !is_menu_open}>
+        <button onclick={() => is_lists_menu_open = !is_lists_menu_open}>
           <img
             src="/list-box-line.svg"
-            alt="Lists button"
+            alt="Lists menu button"
             class="w-12 h-12 hover:bg-slate-500/10 rounded-full"
           />
         </button>
@@ -120,6 +131,15 @@
             class="w-12 h-12 hover:bg-slate-500/10 rounded-full"
           />
         </button>
+        {#if user}
+        <button onclick={() => is_cloud_menu_open = !is_cloud_menu_open}>
+          <img 
+            src="/cloud.svg"
+            alt="Cloud menu button"
+            class="w-12 h-12 p-2 hover:bg-slate-500/10 rounded-full"
+          />
+        </button>
+        {/if}
         <button onclick={deleteList}>
           <img
             src="/trash-line.svg"
@@ -129,13 +149,13 @@
         </button>
       </div>
 
-      {#if is_menu_open}
+      {#if is_lists_menu_open}
         <menu class="absolute flex flex-col gap-2 w-fit h-fit top-20 p-2 bg-white border border-black rounded-lg text-black! text-lg!">
           {#each user_lists as user_list : List (user_list.id)}
             <button
               onclick={() => {
-                switchToList(user_list.id)
-                is_menu_open = false;
+                switchToList(user_list.id);
+                is_lists_menu_open = false;
               }}
               class="flex gap-2 justify-between text-start w-full h-full rounded-xl pl-2 pr-5 py-2 hover:bg-slate-500/10 transition-all duration-150 items-center"
             >
@@ -148,12 +168,29 @@
           <button
             onclick={() => {
               createList();
-              is_menu_open = false;
+              is_lists_menu_open = false;
             }}
             class="flex gap-2 justify-between text-start w-full h-full rounded-xl pl-2 pr-5 py-2 hover:bg-slate-500/10 transition-all duration-150 items-center"
           >
             Create new list
           </button>
+        </menu>
+      {/if}
+
+      {#if is_cloud_menu_open}
+        <menu class="absolute flex flex-col gap-2 w-fit h-fit top-20 p-2 bg-white border border-black rounded-lg text-black! text-lg!">
+          <form method="POST" action="/?/saveListRecord" use:enhance>
+            <input name="id" type="hidden" value={list.id} /> 
+            <input name="title" type="hidden" value={list.title} />
+            <input name="tasks" type="hidden" value={JSON.stringify(list.tasks)} />
+            <button 
+              type="submit" 
+              class="flex gap-2 justify-between text-start w-full h-full rounded-xl pl-2 pr-5 py-2 hover:bg-slate-500/10 transition-all duration-150 items-center"
+            >
+              <img src="/save.svg" alt="Save to PDS button" class="w-8 h-8 p-2"/>
+              Save to PDS
+            </button>
+          </form>
         </menu>
       {/if}
     </section>

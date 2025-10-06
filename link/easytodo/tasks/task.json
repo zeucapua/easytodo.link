@@ -1,0 +1,21 @@
+{
+  "lexicon": 1,
+  "id": "link.easytodo.tasks.task",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "An item to do.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["id", "description", "is_completed"],
+        "properties": {
+          "id": { "type": "string" },
+          "description": { "type": "string" },
+          "is_completed": { "type": "boolean", "default": false },
+          "duration": { "type": "integer" }
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,10 @@
-import type { ServerLoadEvent } from "@sveltejs/kit";
+import type { LayoutServerLoadEvent } from "./$types";
 
-export async function load({ locals }: ServerLoadEvent) {
+export async function load({ locals }: LayoutServerLoadEvent) {
   // have user available throughout the app via LayoutData
-  return { user: locals.user };
+  return !locals.user ? undefined : { user: {
+    did: locals.user.did,
+    handle: locals.user.handle,
+    avatar: locals.user.avatar
+  }};
 }
