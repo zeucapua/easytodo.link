@@ -16,8 +16,8 @@
   let theme = persisted<string>("theme", "dark");
   let is_menu_open = $state(false);
   let theme_style = $derived(theme.value === "dark"
-    ? "text-white absolute top-0 z-[-2] h-screen w-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px]"
-    : "text-black absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"
+    ? "text-white absolute top-0 z-[-2] h-screen w-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-size-[20px_20px]"
+    : "text-black absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px]"
   );
 
   function comingSoon() {
@@ -36,7 +36,7 @@
     {@render children()}
   </section>
 
-  <aside class="z-50 fixed inset-x-0 bottom-0 !text-black flex w-full h-fit items-end justify-between p-8 pointer-events-none">
+  <aside class="z-50 fixed inset-x-0 bottom-0 text-black! flex w-full h-fit items-end justify-between p-8 pointer-events-none">
     <div class="flex flex-col justify-start gap-4 pointer-events-auto">
       {#if is_menu_open}
         <menu
