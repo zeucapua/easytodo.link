@@ -72,16 +72,16 @@ export const atclient = new NodeOAuthClient({
   stateStore: new AuthStateStore(db),
   sessionStore: new AuthSessionStore(db),
   clientMetadata: {
-    client_name: "potatonet-app",
+    client_name: "easytodo.link",
     client_id: !dev ? `${publicUrl}/client-metadata.json`
       : `http://localhost?redirect_uri=${
           encodeURIComponent(`${url}/oauth/callback`)
         }&scope=${
-          encodeURIComponent(`atproto transition:generic`)
+          encodeURIComponent(`atproto repo:link.easytodo.tasks.list repo:link.easytodo.tasks.task`)
         }`,
     client_uri: url,
     redirect_uris: [`${url}/oauth/callback`],
-    scope: "atproto transition:generic",
+    scope: "atproto repo:link.easytodo.tasks.list repo:link.easytodo.tasks.task",
     grant_types: ["authorization_code", "refresh_token"],
     application_type: "web",
     token_endpoint_auth_method: "none",

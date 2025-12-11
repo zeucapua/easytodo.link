@@ -36,16 +36,18 @@
     {@render children()}
   </section>
 
-  <dialog bind:this={loginDialog} class="bg-white">
-    <h1>Login with ATProto</h1>
-    <button onclick={() => loginDialog?.close()}>Close</button>
-    <form method="POST" action="/?/login">
-      <input name="handle" type="text" placeholder="zeu.dev" />
-      <button type="submit">Login</button>
+  <dialog bind:this={loginDialog} class="bg-white top-1/2 left-1/2 -translate-1/2 p-4 rounded">
+    <span class="flex items-center gap-4 self-end">
+      <h1 class="text-xl font-bold">Login with ATProto</h1>
+      <button onclick={() => loginDialog?.close()} class="bg-gray-100 px-3 py-2 rounded self-end">Close</button>
+    </span>
+    <form method="POST" action="/?/login" class="flex flex-col gap-4">
+      <input name="handle" type="text" placeholder="zeu.dev" class="border rounded px-4 py-2" />
+      <button type="submit" class="border px-3 py-2 rounded">Login</button>
     </form>
   </dialog>
 
-  <dialog bind:this={accountDialog} class="bg-white">
+  <dialog bind:this={accountDialog} class="bg-white p-6 shadow top-1/2 left-1/2 -translate-1/2">
     <h1>Account</h1>
     <button onclick={() => accountDialog?.close()}>Close</button>
     <form method="POST" action="/?/logout">

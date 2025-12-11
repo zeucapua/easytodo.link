@@ -18,7 +18,7 @@ export const actions: Actions = {
 
     // get oauth authorizing url to redirect to
     const redirectUrl = await atclient.authorize(handle, {
-      scope: "atproto transition:generic"
+      scope: "atproto repo:link.easytodo.tasks.list repo:link.easytodo.tasks.task"
     });
 
     if (!redirectUrl) { 
