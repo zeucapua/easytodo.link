@@ -26,7 +26,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 
     // set the authed agent
     const authedAgent = new Agent(oauthSession);
-    event.locals.authedAgent = authedAgent;
+    if (!event.locals.authedAgent) {
+      event.locals.authedAgent = authedAgent;
+    }
 
     // set the authed user with decrypted session DID
     const user = await authedAgent.getProfile({ actor: decrypted });

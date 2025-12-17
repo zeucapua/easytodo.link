@@ -66,7 +66,7 @@ export class AuthSessionStore implements NodeSavedSessionStore {
 
 const publicUrl = "https://easytodo.link"
 // localhost resolves to either 127.0.0.1 or [::1] (if ipv6)
-const url = dev ? "http://[::1]:5173" : publicUrl;
+const url = dev ? "http://127.0.0.1:5173" : publicUrl;
 
 export const atclient = new NodeOAuthClient({
   stateStore: new AuthStateStore(db),
@@ -77,11 +77,11 @@ export const atclient = new NodeOAuthClient({
       : `http://localhost?redirect_uri=${
           encodeURIComponent(`${url}/oauth/callback`)
         }&scope=${
-          encodeURIComponent(`atproto repo:link.easytodo.tasks.list repo:link.easytodo.tasks.task`)
+          encodeURIComponent(`atproto repo:link.easytodo.tasks.list repo:link.easytodo.tasks.task rpc:app.bsky.actor.getProfile?aud=did:web:api.bsky.app%23bsky_appview`)
         }`,
     client_uri: url,
     redirect_uris: [`${url}/oauth/callback`],
-    scope: "atproto repo:link.easytodo.tasks.list repo:link.easytodo.tasks.task",
+    scope: "atproto repo:link.easytodo.tasks.list repo:link.easytodo.tasks.task rpc:app.bsky.actor.getProfile?aud=did:web:api.bsky.app%23bsky_appview",
     grant_types: ["authorization_code", "refresh_token"],
     application_type: "web",
     token_endpoint_auth_method: "none",

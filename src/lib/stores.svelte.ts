@@ -38,12 +38,14 @@ export type Task = {
   // optional
   duration?: number;
   stopwatchInterval?: number;
+  rkey?: string;
 }
 
 export type List = {
   id: string;
   title: string;
   tasks: Task[];
+  rkey?: string;
 }
 
 export const local_lists = persisted<List[]>("local_lists", [

@@ -1,5 +1,6 @@
 import { atclient } from "$lib/atproto";
 import type { Task } from "$lib/stores.svelte";
+import { parseAtUri } from "$lib/utils";
 import type { $Typed } from "@atproto/api";
 import type { Create, CreateResult } from "@atproto/api/dist/client/types/com/atproto/repo/applyWrites";
 import { isValidHandle } from "@atproto/syntax";
@@ -18,7 +19,7 @@ export const actions: Actions = {
 
     // get oauth authorizing url to redirect to
     const redirectUrl = await atclient.authorize(handle, {
-      scope: "atproto repo:link.easytodo.tasks.list repo:link.easytodo.tasks.task"
+      scope: "atproto repo:link.easytodo.tasks.list repo:link.easytodo.tasks.task rpc:app.bsky.actor.getProfile?aud=did:web:api.bsky.app%23bsky_appview"
     });
 
     if (!redirectUrl) { 
@@ -42,28 +43,40 @@ export const actions: Actions = {
 
     const formData = await request.formData();
     const id = formData.get("id") as string;
+    const list_rkey = formData.get("rkey") as string;
     const title = formData.get("title") as string;
     const tasks = JSON.parse(formData.get("tasks") as string) as Task[];
-    
-    const task_records = tasks.map((t) => {
-      const { stopwatchInterval, ...rest } = t;
-      return {
-        $type: "link.easytodo.tasks.task",
-        ...rest
-      }
-    });
 
     const response = await agent.com.atproto.repo.applyWrites({
       repo: user.did,
-      writes: task_records.map((r) => {
-        return { 
-          $type: 'com.atproto.repo.applyWrites#create',
-          collection: "link.easytodo.tasks.task", 
-          value: r 
-        } 
+      writes: tasks.map((t) => {
+        const { rkey: task_rkey, stopwatchInterval, ...rest } = t;
+        if (task_rkey) {
+          console.log("UPDATE TASK");
+          return { 
+            $type: 'com.atproto.repo.applyWrites#update',
+            collection: "link.easytodo.tasks.task", 
+            rkey: task_rkey,
+            value: {
+              $type: "link.easytodo.tasks.task",
+              ...rest
+            }
+          } 
+        }
+        else {
+          console.log("CREATE TASK");
+          return { 
+            $type: 'com.atproto.repo.applyWrites#create',
+            collection: "link.easytodo.tasks.task", 
+            value: {
+              $type: "link.easytodo.tasks.task",
+              ...rest
+            },
+          } 
+        }
       })
     });
-
+    
     if (response.success) {
       console.log(response.data.results);
       const list_record = {
@@ -76,13 +89,28 @@ export const actions: Actions = {
           return { cid: t.cid, uri: t.uri }
         })
       };
-      const { success, data } = await agent.com.atproto.repo.createRecord({
-        repo: user.did,
-        collection: "link.easytodo.tasks.list",
-        record: list_record
-      });
 
-      return { saveListRecordResult: { success, uri: data.uri }};
+      if (list_rkey) {
+        const { success, data } = await agent.com.atproto.repo.putRecord({
+          rkey: list_rkey,
+          repo: user.did,
+          collection: "link.easytodo.tasks.list",
+          record: list_record
+        });
+        console.log("UPDATE LIST", { success, uri: data.uri });
+        return { saveListRecordResult: { success, rkey: list_rkey, uri: data.uri }};
+      }
+      else {
+        const { success, data } = await agent.com.atproto.repo.createRecord({
+          repo: user.did,
+          collection: "link.easytodo.tasks.list",
+          record: list_record
+        });
+        const { rkey } = parseAtUri(data.uri);
+        console.log("CREATE LIST", { success, rkey, uri: data.uri });
+        return { saveListRecordResult: { success, rkey, uri: data.uri }};
+      }
+
     }
   }
 };

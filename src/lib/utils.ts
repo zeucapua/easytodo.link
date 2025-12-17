@@ -4,6 +4,16 @@ export function generateId() {
   return generateRandomString(10, alphabet("a-z", "0-9"));
 }
 
+export function parseAtUri(uri: string) {
+  const regex = /at:\/\/(?<did>did.*)\/(?<lexi>.*)\/(?<rkey>.*)/;
+  const groups = regex.exec(uri)?.groups;
+  return {
+    did: groups?.did,
+    lexi: groups?.lexi,
+    rkey: groups?.rkey
+  }
+}
+
 export function formatSecondsToDuration(seconds: number = 0) {
   let hours   = Math.floor(seconds / 3600);
   let minutes = Math.floor((seconds - (hours * 3600)) / 60);
