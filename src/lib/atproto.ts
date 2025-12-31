@@ -66,7 +66,7 @@ export class AuthSessionStore implements NodeSavedSessionStore {
 
 const publicUrl = "https://easytodo.link"
 // localhost resolves to either 127.0.0.1 or [::1] (if ipv6)
-const url = dev ? "http://127.0.0.1:5173" : publicUrl;
+const url = dev ? "http://[::1]:5173" : publicUrl;
 
 export const atclient = new NodeOAuthClient({
   stateStore: new AuthStateStore(db),
