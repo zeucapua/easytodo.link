@@ -3,7 +3,7 @@
   import { onMount, type Snippet } from "svelte";
   import { page } from "$app/state";
   import { goto } from "$app/navigation";
-  import { fade } from "svelte/transition";
+  import { fade, slide } from "svelte/transition";
   import toast, { Toaster } from "svelte-french-toast";
   import { persisted, pinned_list } from "$lib/stores.svelte";
 
@@ -16,7 +16,7 @@
   let theme = persisted<string>("theme", "dark");
   let is_menu_open = $state(false);
   let theme_style = $derived(theme.value === "dark"
-    ? "text-white absolute top-0 z-[-2] h-screen w-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-size-[20px_20px]"
+    ? "text-white absolute top-0 z-[-2] h-screen w-screen bg-[#000000] bg-[radial-gradient(#1e293b_1px,#00091d_1px)] bg-size-[20px_20px]"
     : "text-black absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px]"
   );
 
@@ -40,7 +40,7 @@
     <div class="flex flex-col justify-start gap-4 pointer-events-auto">
       {#if is_menu_open}
         <menu
-          transition:fade={{ duration: 150 }}
+          transition:slide|global={{ duration: 250 }}
           class={`${theme.value === "light" ? "border-black" : "border-[#00091d]"} w-fit border z-50 flex flex-col items-start gap-2 h-fit p-2 rounded-xl bg-white`}
         >
           <button

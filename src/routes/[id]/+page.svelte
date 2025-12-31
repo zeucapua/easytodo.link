@@ -5,6 +5,7 @@
   import toast from "svelte-french-toast";
   import { formatSecondsToDuration, generateId } from "$lib/utils";
   import { local_lists, pinned_list, type List, type Task } from "$lib/stores.svelte";
+    import { slide } from "svelte/transition";
 
   let is_menu_open = $state(false);
   let list : List | undefined = $state(local_lists.value!.find((l) => l.id === page.params.id));
@@ -130,7 +131,10 @@
       </div>
 
       {#if is_menu_open}
-        <menu class="absolute flex flex-col gap-2 w-fit h-fit top-20 p-2 bg-white border border-black rounded-lg text-black! text-lg!">
+        <menu 
+          transition:slide|global={{ duration: 250 }}
+          class="absolute flex flex-col gap-2 w-fit h-fit top-20 p-2 bg-white border border-black rounded-lg text-black! text-lg!"
+        >
           {#each user_lists as user_list : List (user_list.id)}
             <button
               onclick={() => {
