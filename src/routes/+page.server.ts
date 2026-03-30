@@ -1,8 +1,6 @@
 import { atclient } from "$lib/atproto";
 import type { Task } from "$lib/stores.svelte";
 import { parseAtUri } from "$lib/utils";
-import type { $Typed } from "@atproto/api";
-import type { Create, CreateResult } from "@atproto/api/dist/client/types/com/atproto/repo/applyWrites";
 import { isValidHandle } from "@atproto/syntax";
 import { error, fail, redirect, type Actions } from "@sveltejs/kit";
 

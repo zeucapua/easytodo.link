@@ -36,29 +36,31 @@
     {@render children()}
   </section>
 
-  <dialog bind:this={loginDialog} class="flex flex-col w-lg gap-4 bg-white top-1/2 left-1/2 -translate-1/2 p-4 rounded">
-    <span class="flex items-center gap-4 self-end w-full justify-between">
-      <h1 class="text-xl font-bold">Log into the Atmosphere</h1>
-      <button onclick={() => loginDialog?.close()} class="bg-gray-100 px-3 py-2 rounded self-end">Close</button>
-    </span>
-    <form method="POST" action="/?/login" class="flex flex-col gap-4">
-      <input name="handle" type="text" placeholder="zeu.dev" class="border rounded px-4 py-2" />
-      <button type="submit" class="border px-3 py-2 rounded">Login</button>
-    </form>
-    <details class="border border-gray-300 px-3 py-2 rounded">
-      <summary class="marker:hidden font-semibold cursor-pointer">
-        <span class="text-blue-500">@</span> Enter your internet handle
-      </summary>
-      <span class="flex flex-col gap-2 text-sm pt-1">
-        <p>
-          This would be a domain you control, most likely first created with Bluesky, Tangled, Gander, 
-          or other Atmosphere applications.
-        </p>
-        <a href="" class="text-blue-500 underline">
-          Learn more about ATproto and controlling your social media data
-        </a>
+  <dialog popover bind:this={loginDialog} class="w-lg bg-white top-1/2 left-1/2 -translate-1/2 p-4 rounded">
+    <div class="flex flex-col gap-4">
+      <span class="flex items-center gap-4 self-end w-full justify-between">
+        <h1 class="text-xl font-bold">Log into the Atmosphere</h1>
+        <button onclick={() => loginDialog?.close()} class="bg-gray-100 px-3 py-2 rounded self-end">Close</button>
       </span>
-    </details>
+      <form method="POST" action="/?/login" class="flex flex-col gap-4">
+        <input name="handle" type="text" placeholder="zeu.dev" class="border rounded px-4 py-2" />
+        <button type="submit" class="border px-3 py-2 rounded">Login</button>
+      </form>
+      <details class="border border-gray-300 px-3 py-2 rounded">
+        <summary class="marker:hidden font-semibold cursor-pointer">
+          <span class="text-blue-500">@</span> Enter your internet handle
+        </summary>
+        <span class="flex flex-col gap-2 text-sm pt-1">
+          <p>
+            This would be a domain you control, most likely first created with Bluesky, Tangled, Gander, 
+            or other Atmosphere applications.
+          </p>
+          <a href="" class="text-blue-500 underline">
+            Learn more about ATproto and controlling your social media data
+          </a>
+        </span>
+      </details>
+    </div>
   </dialog>
 
   <dialog bind:this={accountDialog} class="bg-white p-6 shadow top-1/2 left-1/2 -translate-1/2">
