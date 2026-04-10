@@ -1,11 +1,10 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import { page } from "$app/state";
   import { goto } from "$app/navigation";
   import toast from "svelte-french-toast";
-  import { formatSecondsToDuration, generateId } from "$lib/utils";
-  import { local_lists, pinned_list, type List, type Task } from "$lib/stores.svelte";
-    import TaskItem from "$lib/TaskItem.svelte";
+  import { generateId } from "$lib/utils";
+  import { local_lists, pinned_list, type List } from "$lib/stores.svelte";
+  import TaskItem from "$lib/TaskItem.svelte";
 
   let is_menu_open = $state(false);
   let list : List | undefined = $derived(local_lists.current!.find((l) => l.id === page.params.id));
