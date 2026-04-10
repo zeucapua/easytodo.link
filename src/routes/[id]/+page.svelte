@@ -5,15 +5,15 @@
   import toast from "svelte-french-toast";
   import { formatSecondsToDuration, generateId } from "$lib/utils";
   import { local_lists, pinned_list, type List, type Task } from "$lib/stores.svelte";
+    import TaskItem from "$lib/TaskItem.svelte";
 
   let is_menu_open = $state(false);
-  let list : List | undefined = $state(local_lists.value!.find((l) => l.id === page.params.id));
+  let list : List | undefined = $derived(local_lists.current!.find((l) => l.id === page.params.id));
   let task_input = $state("");
-  let user_lists = $derived(local_lists.value) as List[];
+  let user_lists = $derived(local_lists.current) as List[];
 
   // since list points to something inside local_lists,
   // it will run when list state changes
-  $effect(() => local_lists.update());
 
   function addTask() {
     if (task_input.length === 0) {
@@ -24,7 +24,8 @@
     list?.tasks.push({
       id: generateId(),
       description: task_input,
-      is_completed: false
+      completed: false,
+      duration: 0
     });
 
     task_input = "";
@@ -36,23 +37,6 @@
     }
   }
 
-  function toggleInterval(id: string) {
-    if (list) {
-      const task = list.tasks.find((t) => t.id === id) as Task;
-      if (task.stopwatchInterval) {
-        clearInterval(task.stopwatchInterval);
-        task.stopwatchInterval = undefined;
-      }
-      else {
-        const interval = setInterval(() => {
-          if (!task.duration) { task.duration = 0; }
-          task.duration += 1;
-        }, 1000);
-        task.stopwatchInterval = interval;
-      }
-    }
-  }
-
   function createList() {
     const new_list = {
       id: generateId(),
@@ -60,46 +44,30 @@
       tasks: []
     };
 
-    local_lists.value!.push(new_list);
-    list = local_lists.value!.find((l) => l.id === new_list.id);
+    local_lists.current!.push(new_list);
+    list = local_lists.current!.find((l) => l.id === new_list.id);
     goto(`/${list!.id}`);
   }
 
   function switchToList(id: string) {
-    list = local_lists.value!.find((l) => l.id === id);
+    list = local_lists.current!.find((l) => l.id === id);
     goto(`/${list!.id}`);
   }
 
   function pinList(id: string) {
-    pinned_list.value = id;
+    pinned_list.current = id;
   }
 
   function deleteList() {
-    if (pinned_list.value === page.params.id) {
+    if (pinned_list.current === page.params.id) {
       toast.error("Cannot delete pinned list");
       return;
     }
 
-    local_lists.value = local_lists.value!.filter((l) => l.id !== page.params.id);
-    list = local_lists.value.find((l) => l.id === pinned_list.value);
+    local_lists.current = local_lists.current!.filter((l) => l.id !== page.params.id);
+    list = local_lists.current.find((l) => l.id === pinned_list.current);
     goto(`/${list!.id}`);
   }
-
-  onMount(() => {
-    if (list) {
-      for (const task of list.tasks) {
-        // if a task's stopwatch is still running
-        // remove it so the user can start it again in one click
-        // instead of two cause the first `toggleInterval` would
-        // just remove the interval
-        if (task.stopwatchInterval) {
-          clearInterval(task.stopwatchInterval);
-          task.stopwatchInterval = undefined;
-          local_lists.update();
-        }
-      }
-    }
-  });
 </script>
 
 <main class="flex flex-col w-full px-2 pt-8 pb-28 lg:px-4 lg:pt-4  gap-8 text-xl lg:text-3xl">
@@ -115,7 +83,7 @@
         </button>
         <button onclick={() => pinList(list!.id)}>
           <img
-            src={pinned_list.value === list.id ? "/pin.svg" : "/pin-line.svg"}
+            src={pinned_list.current === list.id ? "/pin.svg" : "/pin-line.svg"}
             alt="Pin list button"
             class="w-12 h-12 hover:bg-slate-500/10 rounded-full"
           />
@@ -166,36 +134,8 @@
     />
 
     <ul class="flex flex-col gap-4">
-      {#each list.tasks as task (task.id)}
-        <li class="group flex justify-between items-center gap-4">
-          <div class="flex w-full gap-4 items-center pr-4 py-2">
-            <input 
-              type="checkbox" 
-              bind:checked={task.is_completed} 
-              class="w-6 h-6 bg-transparent"
-            />
-            <input 
-              type="text" 
-              bind:value={task.description}
-              class={`w-full hover:underline text-ellipsis overflow-hidden bg-transparent ${task.is_completed && "text-white/50"}`}
-            />
-          </div>
-
-          <div class="flex gap-4 w-fit items-center">
-            <button
-              onclick={() => toggleInterval(task.id)} 
-              class="w-fit h-fit tabular-nums text-lg"
-            >
-              {formatSecondsToDuration(task.duration!)}
-            </button>
-            <button 
-              onclick={() => deleteTask(task.id)}
-              class="px-4 py-2 bg-red-500 rounded-xl text-white"
-            >
-              -
-            </button>
-          </div>
-        </li>
+      {#each list.tasks as task, i (task.id)}
+        <TaskItem bind:task={list.tasks[i]} onDelete={deleteTask} />
       {/each}
       <li class="flex gap-4 w-full">
         <input type="text" bind:value={task_input} class="bg-transparent pr-4 py-2 border-b w-full"/>
