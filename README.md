@@ -8,14 +8,17 @@ Superpowered to do lists. No signup required.
 - [x] Local first task list management
 - [x] Timer per task
 
-### v0.2: 🌐 Show and tell
+### v0.2: ✨ Work smarter 
+- [ ] Improved timer (set duration, unit per rate tracking)
+- [ ] Task blocks (notes, embeds, links, tags, etc.)
+- [ ] Multi-list super view
+- [ ] Statistics report
+
+### v0.3: 🌐 Show and tell
 - [ ] Cloud sync with accounts
 - [ ] Share and explore public lists
 - [ ] Multiplayer Lists (1-way mirror/sync)
 
-### v0.3: ✨ Work smarter 
-- [ ] AI task suggestions
-- [ ] Task blocks (notes, embeds, links, etc.)
 
 ## Made with
 
@@ -23,8 +26,4 @@ Superpowered to do lists. No signup required.
 - SvelteKit: Meta framework
 - TailwindCSS: CSS-in-JS Solution
 
-## Acknowledgements
-
-_Will be updated throughout development_
-
-_**Made with <3 by [zeu_dev](https://zeu.dev)**_
+_**Made with 💛 by [zeu_dev](https://zeu.dev)**_
