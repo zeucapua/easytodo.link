@@ -1,6 +1,6 @@
 # easytodo.link
 
-Superpowered to do lists. No signup required.
+It's a todo list.
 
 ## Roadmap
 
