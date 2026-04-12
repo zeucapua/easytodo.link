@@ -74,7 +74,7 @@
       command="show-modal"
       commandfor={`timer_${task.id}`}
       onclick={handleOpenTimer} 
-      class="w-fit h-fit tabular-nums text-lg"
+      class="w-fit h-fit tabular-nums text-lg hover:bg-gray-50/20 border rounded-lg p-2"
     >
       {formatSecondsToDuration(task.duration!)}
     </button>
