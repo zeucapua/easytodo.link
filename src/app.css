@@ -5,3 +5,7 @@
   src: url("/ApfelGrotezk-Regular.woff2"),
        url("/ApfelGrotezk-Fett.woff2");
 }
+
+button {
+  cursor: pointer;
+}
