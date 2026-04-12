@@ -138,8 +138,8 @@
       {/each}
       <li class="flex gap-4 w-full">
         <input type="text" bind:value={task_input} class="bg-transparent pr-4 py-2 border-b w-full"/>
-        <button onclick={addTask} class="px-5 rounded-full bg-white text-black">
-          +
+        <button onclick={addTask} class="p-2 rounded-full bg-white hover:bg-gray-200 border text-black">
+          <img src="/basil--plus-solid.svg" alt="Add" class="w-8"/>
         </button>
       </li>
     </ul>
