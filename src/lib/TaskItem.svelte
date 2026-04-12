@@ -46,10 +46,7 @@
     </div>
 
     <div class="flex w-fit items-center justify-center">
-      <label>
-        hr
-        <input type="number" min="0" bind:value={hourInput} class="w-12" /> 
-      </label>
+      <input type="number" min="0" bind:value={hourInput} class="w-12" /> 
       <p class="mr-4">:</p>
       <input type="number" min="0" max="59" bind:value={minuteInput} class="w-12" /> 
       <p class="mr-4">:</p>
@@ -58,7 +55,7 @@
   </form>
 </dialog>
 
-<li class="group flex justify-between items-center gap-4">
+<li class="group flex justify-between h-fit items-center gap-4">
   <div class="flex w-full gap-4 items-center pr-4 py-2">
     <input 
       type="checkbox" 
@@ -72,7 +69,7 @@
     />
   </div>
 
-  <div class="flex gap-4 w-fit items-center">
+  <div class="flex gap-4 w-fit h-fit items-center">
     <button
       command="show-modal"
       commandfor={`timer_${task.id}`}
@@ -81,11 +78,21 @@
     >
       {formatSecondsToDuration(task.duration!)}
     </button>
+    <button
+      onclick={toggleInterval}
+      class="w-full h-fit bg-white hover:bg-gray-200 border rounded-full p-2"
+    >
+      {#if interval.isActive}
+        <img src="/basil--pause-solid.svg" alt="Pause" class="w-8" />
+      {:else}
+        <img src="/basil--play-solid.svg" alt="Play" class="w-8" />
+      {/if}
+    </button>
     <button 
       onclick={() => onDelete(task.id)}
-      class="px-4 py-2 bg-red-500 rounded-xl text-white"
+      class="p-2 bg-red-500 rounded-xl text-white w-full h-fit"
     >
-      -
+      <img src="/basil--trash-solid.svg" alt="Trash" class="w-24" />
     </button>
   </div>
 </li>
