@@ -32,8 +32,8 @@
   });
 </script>
 
-<div class={`${theme_style} font-apfel flex flex-col w-full h-full min-w-screen min-h-screen p-8 overflow-auto`}>
-  <section class="p-4 w-full h-full">
+<div class={`${theme_style} font-apfel flex flex-col items-center justify-center w-full h-full min-w-screen min-h-screen p-8 overflow-auto`}>
+  <section class="relative w-full h-full">
     {@render children()}
   </section>
 
