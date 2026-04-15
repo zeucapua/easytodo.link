@@ -24,18 +24,23 @@
       interval.resume();
     }
   }
-
-  function handleOpenTimer() {
-
-  }
-
+  
+  let timerDialog: HTMLDialogElement | undefined = $state();
   let hourInput = $state(0);
   let minuteInput = $state(0);
   let secondsInput = $state(0);
+
+  function handleOpenTimer() {
+     
+  }
+
+  function handleTimeSubmit() {
+
+  }
 </script>
 
-<dialog id={`timer_${task.id}`} class="fixed inset-0 m-auto w-1/2 p-8">
-  <form method="dialog" class="w-fit">
+<dialog bind:this={timerDialog} id={`timer_${task.id}`} class="fixed inset-0 m-auto w-1/2 p-8 rounded-xl">
+  <form method="dialog" class="w-fit" onsubmit={handleTimeSubmit}>
     <div class="flex gap-8 items-center text-lg">
       <button type="button" onclick={() => selectedTab = "set"} class={[selectedTab === "set" && "border border-red-500"]}>
         Set
@@ -52,6 +57,10 @@
       <p class="mr-4">:</p>
       <input type="number" min="0" max="59" bind:value={secondsInput} class="w-12" /> 
     </div>
+
+    <button type="submit">
+      Confirm
+    </button>
   </form>
 </dialog>
 
@@ -73,7 +82,7 @@
     <button
       command="show-modal"
       commandfor={`timer_${task.id}`}
-      onclick={handleOpenTimer} 
+      onclick={handleOpenTimer}
       class="w-fit h-fit tabular-nums text-lg hover:bg-gray-50/20 border rounded-lg p-2"
     >
       {formatSecondsToDuration(task.duration!)}
