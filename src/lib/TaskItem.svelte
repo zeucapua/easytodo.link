@@ -29,9 +29,9 @@
   let hourInput = $state(0);
   let minuteInput = $state(0);
   let secondsInput = $state(0);
+  let inputDuration = $derived((hourInput * 360) + (minuteInput * 60) + secondsInput);
 
   function handleTimeSubmit() {
-    const inputDuration = (hourInput * 360) + (minuteInput * 60) + secondsInput;
     if (selectedTab === "set") {
         task.duration = inputDuration;
     } 
@@ -43,6 +43,7 @@
 
 <dialog bind:this={timerDialog} id={`timer_${task.id}`} class="fixed inset-0 m-auto w-1/2 p-8 rounded-xl">
   <form method="dialog" class="w-fit" onsubmit={handleTimeSubmit}>
+    <button type="button" onclick={() => timerDialog?.close()}>Close</button>
     <div class="flex gap-8 items-center text-lg">
       <button type="button" onclick={() => selectedTab = "set"} class={[selectedTab === "set" && "border border-red-500"]}>
         Set
@@ -60,6 +61,14 @@
       <input type="number" min="0" max="59" bind:value={secondsInput} class="w-12" /> 
     </div>
 
+    <p>
+      {formatSecondsToDuration(task.duration)} ➜ 
+      {#if selectedTab === "set"}
+        {formatSecondsToDuration(inputDuration)}
+      {:else if selectedTab === "add"}
+        {formatSecondsToDuration(task.duration + inputDuration)}
+      {/if}
+    </p>
     <button type="submit">
       Confirm
     </button>
@@ -84,7 +93,6 @@
     <button
       command="show-modal"
       commandfor={`timer_${task.id}`}
-      onclick={handleOpenTimer}
       class="w-fit h-fit tabular-nums text-lg hover:bg-gray-50/20 border rounded-lg p-2"
     >
       {formatSecondsToDuration(task.duration!)}
