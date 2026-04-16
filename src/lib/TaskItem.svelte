@@ -30,12 +30,14 @@
   let minuteInput = $state(0);
   let secondsInput = $state(0);
 
-  function handleOpenTimer() {
-     
-  }
-
   function handleTimeSubmit() {
-
+    const inputDuration = (hourInput * 360) + (minuteInput * 60) + secondsInput;
+    if (selectedTab === "set") {
+        task.duration = inputDuration;
+    } 
+    else if (selectedTab === "add") {
+        task.duration += inputDuration;
+    }
   }
 </script>
 
