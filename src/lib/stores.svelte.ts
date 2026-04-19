@@ -5,7 +5,7 @@ export type Task = {
   id: string;
   description: string;
   completed: boolean;
-  duration: number;
+  duration: number; // in seconds
 }
 
 export type List = {
