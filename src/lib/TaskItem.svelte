@@ -29,7 +29,7 @@
   let hourInput = $state(0);
   let minuteInput = $state(0);
   let secondsInput = $state(0);
-  let inputDuration = $derived((hourInput * 360) + (minuteInput * 60) + secondsInput);
+  let inputDuration = $derived((hourInput * 3600) + (minuteInput * 60) + secondsInput);
 
   function handleTimeSubmit() {
     if (selectedTab === "set") {
