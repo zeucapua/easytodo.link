@@ -41,37 +41,39 @@
   }
 </script>
 
-<dialog bind:this={timerDialog} id={`timer_${task.id}`} class="fixed inset-0 m-auto w-1/2 p-8 rounded-xl">
-  <form method="dialog" class="w-fit" onsubmit={handleTimeSubmit}>
-    <button type="button" onclick={() => timerDialog?.close()}>Close</button>
-    <div class="flex gap-8 items-center text-lg">
-      <button type="button" onclick={() => selectedTab = "set"} class={[selectedTab === "set" && "border border-red-500"]}>
-        Set
-      </button>
-      <button type="button" onclick={() => selectedTab = "add"} class={[selectedTab === "add" && "border border-red-500"]}>
-        Add
+<dialog bind:this={timerDialog} id={`timer_${task.id}`} class="fixed border inset-0 m-auto w-1/2 p-8 rounded-xl">
+  <form method="dialog" onsubmit={handleTimeSubmit}> 
+    <button type="button" onclick={() => timerDialog?.close()} class="absolute right-12">×</button>
+    <div class="flex flex-col items-center gap-4">
+      <div class="flex items-center text-sm border rounded-full bg-gray-300">
+        <button type="button" onclick={() => selectedTab = "set"} class={[selectedTab === "set" && "border-black bg-white", "border border-gray-300 px-3 py-1 rounded-l-full bg-gray-300"]}>
+          Set
+        </button>
+        <button type="button" onclick={() => selectedTab = "add"} class={[selectedTab === "add" && "border-black bg-white", "border border-gray-300 px-3 py-1 rounded-r-full bg-gray-300"]}>
+          Add
+        </button>
+      </div>
+
+      <div class="flex w-fit items-center justify-center">
+        <input type="number" min="0" max="99" bind:value={hourInput} class="text-right" /> 
+        <p class="mr-4">:</p>
+        <input type="number" min="0" max="59" bind:value={minuteInput} class="text-right" /> 
+        <p class="mr-4">:</p>
+        <input type="number" min="0" max="59" bind:value={secondsInput} class="text-right" /> 
+      </div>
+
+      <p>
+        <span class="text-gray-600">{formatSecondsToDuration(task.duration)}</span> ➜ 
+        {#if selectedTab === "set"}
+          {formatSecondsToDuration(inputDuration)}
+        {:else if selectedTab === "add"}
+          {formatSecondsToDuration(task.duration + inputDuration)}
+        {/if}
+      </p>
+      <button type="submit" class="bg-green-400 px-4 py-1 text-lg rounded-lg">
+        Confirm
       </button>
     </div>
-
-    <div class="flex w-fit items-center justify-center">
-      <input type="number" min="0" bind:value={hourInput} class="w-12" /> 
-      <p class="mr-4">:</p>
-      <input type="number" min="0" max="59" bind:value={minuteInput} class="w-12" /> 
-      <p class="mr-4">:</p>
-      <input type="number" min="0" max="59" bind:value={secondsInput} class="w-12" /> 
-    </div>
-
-    <p>
-      {formatSecondsToDuration(task.duration)} ➜ 
-      {#if selectedTab === "set"}
-        {formatSecondsToDuration(inputDuration)}
-      {:else if selectedTab === "add"}
-        {formatSecondsToDuration(task.duration + inputDuration)}
-      {/if}
-    </p>
-    <button type="submit">
-      Confirm
-    </button>
   </form>
 </dialog>
 
