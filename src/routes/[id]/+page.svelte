@@ -2,7 +2,7 @@
   import { page } from "$app/state";
   import { goto } from "$app/navigation";
   import toast from "svelte-french-toast";
-  import { createList, generateId } from "$lib/utils";
+  import { createList, deleteList, generateId, pinList } from "$lib/utils";
   import { local_lists, pinned_list, type List } from "$lib/stores.svelte";
   import TaskItem from "$lib/TaskItem.svelte";
 
@@ -32,26 +32,6 @@
       list.tasks = list.tasks.filter((t) => t.id !== id);
     }
   }
-
-  function switchToList(id: string) {
-    list = local_lists.current!.find((l) => l.id === id);
-    goto(`/${list!.id}`);
-  }
-
-  function pinList(id: string) {
-    pinned_list.current = id;
-  }
-
-  function deleteList() {
-    if (pinned_list.current === page.params.id) {
-      toast.error("Cannot delete pinned list");
-      return;
-    }
-
-    local_lists.current = local_lists.current!.filter((l) => l.id !== page.params.id);
-    list = local_lists.current.find((l) => l.id === pinned_list.current);
-    goto(`/${list!.id}`);
-  }
 </script>
 
 <main class="flex flex-col w-full px-2 pt-8 pb-28 lg:px-4 lg:pt-4  gap-8 text-xl lg:text-3xl">
@@ -72,7 +52,7 @@
             class="w-12 h-12 hover:bg-slate-500/10 rounded-full"
           />
         </button>
-        <button onclick={deleteList}>
+        <button onclick={() => deleteList(page.params.id!)}>
           <img
             src="/trash-line.svg"
             alt="Delete list button"
@@ -86,7 +66,7 @@
           {#each user_lists as user_list : List (user_list.id)}
             <button
               onclick={() => {
-                switchToList(user_list.id)
+                goto(`/${user_list.id}`);
                 is_menu_open = false;
               }}
               class="flex gap-2 justify-between text-start w-full h-full rounded-xl pl-2 pr-5 py-2 hover:bg-slate-500/10 transition-all duration-150 items-center"
