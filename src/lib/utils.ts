@@ -1,6 +1,7 @@
-import { alphabet, generateRandomString } from "oslo/crypto";
-import { local_lists } from "./stores.svelte";
 import { goto } from "$app/navigation";
+import toast from "svelte-french-toast";
+import { local_lists, pinned_list, type List } from "./stores.svelte";
+import { alphabet, generateRandomString } from "oslo/crypto";
 
 export function generateId() {
   return generateRandomString(10, alphabet("a-z", "0-9"));
@@ -29,5 +30,18 @@ export function createList() {
   };
 
   local_lists.current!.push(new_list);
-  goto(`/${new_list.id}`);
+  return { id: new_list.id };
+}
+
+export function deleteList(id: string) {
+  if (pinned_list.current === id) {
+    toast.error("Cannot delete pinned list");
+    return;
+  }
+
+  local_lists.current = local_lists.current.filter((l) => l.id !== id);
+}
+
+export function pinList(id: string) {
+  pinned_list.current = id;
 }

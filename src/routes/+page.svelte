@@ -2,6 +2,7 @@
   import ListItem from "$lib/ListItem.svelte";
   import { createList } from "$lib/utils";
   import { user_preferences, local_lists } from "$lib/stores.svelte";
+    import { goto } from "$app/navigation";
 </script>
 
 <main class="flex flex-col w-full px-2 pt-8 pb-28 lg:px-4 lg:pt-4  gap-8 text-xl lg:text-3xl">
@@ -11,7 +12,7 @@
       {#each local_lists.current as list}
         <ListItem {list} /> 
       {/each}
-      <button onclick={createList} aria-label="Create New List" class="flex justify-center items-center border bg-white">
+      <button onclick={() => { const { id } = createList(); goto(`/${id}`); }} aria-label="Create New List" class="flex justify-center items-center border bg-white">
         <img src="/basil--plus-solid.svg" alt="Plus" class="size-8 text-white" />
       </button>
     </div>
