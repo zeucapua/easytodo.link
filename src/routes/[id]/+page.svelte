@@ -2,7 +2,7 @@
   import { page } from "$app/state";
   import { goto } from "$app/navigation";
   import toast from "svelte-french-toast";
-  import { generateId } from "$lib/utils";
+  import { createList, generateId } from "$lib/utils";
   import { local_lists, pinned_list, type List } from "$lib/stores.svelte";
   import TaskItem from "$lib/TaskItem.svelte";
 
@@ -10,9 +10,6 @@
   let list : List | undefined = $derived(local_lists.current!.find((l) => l.id === page.params.id));
   let task_input = $state("");
   let user_lists = $derived(local_lists.current) as List[];
-
-  // since list points to something inside local_lists,
-  // it will run when list state changes
 
   function addTask() {
     if (task_input.length === 0) {
@@ -34,18 +31,6 @@
     if (list) {
       list.tasks = list.tasks.filter((t) => t.id !== id);
     }
-  }
-
-  function createList() {
-    const new_list = {
-      id: generateId(),
-      title: "",
-      tasks: []
-    };
-
-    local_lists.current!.push(new_list);
-    list = local_lists.current!.find((l) => l.id === new_list.id);
-    goto(`/${list!.id}`);
   }
 
   function switchToList(id: string) {

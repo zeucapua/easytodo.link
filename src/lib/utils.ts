@@ -1,4 +1,6 @@
 import { alphabet, generateRandomString } from "oslo/crypto";
+import { local_lists } from "./stores.svelte";
+import { goto } from "$app/navigation";
 
 export function generateId() {
   return generateRandomString(10, alphabet("a-z", "0-9"));
@@ -17,4 +19,15 @@ export function formatSecondsToDuration(seconds: number = 0) {
   if (seconds < 10) { secs = "0" + seconds; } else { secs = seconds; }
 
   return hrs + ':' + mins + ':' + secs ;
+}
+
+export function createList() {
+  const new_list = {
+    id: generateId(),
+    title: "",
+    tasks: []
+  };
+
+  local_lists.current!.push(new_list);
+  goto(`/${new_list.id}`);
 }
