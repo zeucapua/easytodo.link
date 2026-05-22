@@ -1,6 +1,5 @@
-import { goto } from "$app/navigation";
 import toast from "svelte-french-toast";
-import { local_lists, pinned_list, type List } from "./stores.svelte";
+import { local_lists, pinned_list } from "./stores.svelte";
 import { alphabet, generateRandomString } from "oslo/crypto";
 
 export function generateId() {
