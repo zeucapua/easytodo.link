@@ -32,6 +32,11 @@
       list.tasks = list.tasks.filter((t) => t.id !== id);
     }
   }
+
+  function handleDeleteList() {
+    deleteList(page.params.id!);
+    goto(`/${pinned_list.current}`)
+  }
 </script>
 
 <main class="flex flex-col w-full px-2 pt-8 pb-28 lg:px-4 lg:pt-4  gap-8 text-xl lg:text-3xl">
@@ -52,7 +57,7 @@
             class="w-12 h-12 hover:bg-slate-500/10 rounded-full"
           />
         </button>
-        <button onclick={() => deleteList(page.params.id!)}>
+        <button onclick={handleDeleteList}>
           <img
             src="/trash-line.svg"
             alt="Delete list button"
