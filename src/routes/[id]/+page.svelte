@@ -57,6 +57,13 @@
             class="w-12 h-12 hover:bg-slate-500/10 rounded-full"
           />
         </button>
+        <button>
+          <img
+            src="/octicons--archive.svg"
+            alt="Archive list button"
+            class="w-12 h-12 p-2 hover:bg-slate-500/10 rounded-full"
+          />
+        </button>
         <button onclick={handleDeleteList}>
           <img
             src="/trash-line.svg"
