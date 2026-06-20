@@ -1,5 +1,5 @@
 import toast from "svelte-french-toast";
-import { local_lists, pinned_list } from "./stores.svelte";
+import { archived_lists, local_lists, pinned_list } from "./stores.svelte";
 import { alphabet, generateRandomString } from "oslo/crypto";
 
 export function generateId() {
@@ -43,4 +43,19 @@ export function deleteList(id: string) {
 
 export function pinList(id: string) {
   pinned_list.current = id;
+}
+
+export function toggleArchiveList(id: string) {
+  if (pinned_list.current === id) {
+    toast.error("Cannot archive pinned list");
+    return;
+  }
+
+  const archived = archived_lists.current;
+  if (archived.find(a => a === id)) {
+    archived_lists.current = archived.filter(a => a !== id);
+  }
+  else {
+    archived_lists.current!.push(id);
+  }
 }

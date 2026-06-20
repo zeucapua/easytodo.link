@@ -26,10 +26,12 @@ export const local_lists = new PersistedState<List[]>("local_lists", [
 ]);
 
 export const pinned_list = new PersistedState<string>("pinned_list", local_lists.current[0].id);
+export const archived_lists = new PersistedState<string[]>("archived_lists", []);
 
 const DEFAULT_USER_PREFERENCES = {
   theme: "dark",
-  openPinOnLoad: false
+  openPinOnLoad: false,
+  showArchiveAtHomeDefault: false
 };
 
 export const user_preferences = new PersistedState("easyUserPreferences", DEFAULT_USER_PREFERENCES);
